@@ -1,0 +1,1261 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sysuser.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Sysuser"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/system/user": {
+      "post": {
+        "summary": "创建用户",
+        "operationId": "Sysuser_CreateSysuser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateSysuserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateSysuserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      },
+      "put": {
+        "summary": "更新用户",
+        "operationId": "Sysuser_UpdateSysuser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysuserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateSysuserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/auth": {
+      "get": {
+        "summary": "获取用户权限",
+        "operationId": "Sysuser_Auth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AuthReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/changeStatus": {
+      "put": {
+        "summary": "更新用户状态",
+        "operationId": "Sysuser_ChangeStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ChangeStatusReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ChangeStatusRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/getById/{id}": {
+      "get": {
+        "summary": "获取用户",
+        "operationId": "Sysuser_GetSysuser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSysuserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/getCaptcha": {
+      "get": {
+        "summary": "获取验证码",
+        "operationId": "Sysuser_GetCaptcha",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetCaptchaReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/getInit": {
+      "get": {
+        "summary": "获取岗位",
+        "operationId": "Sysuser_GetPostInit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetPostInitReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/getRoPo": {
+      "get": {
+        "summary": "获取RoPo",
+        "operationId": "Sysuser_GetUserRolePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserRolePostReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/list": {
+      "get": {
+        "summary": "用户列表",
+        "operationId": "Sysuser_ListSysuser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListSysuserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/login": {
+      "post": {
+        "summary": "登入",
+        "operationId": "Sysuser_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LoginReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/logout": {
+      "post": {
+        "summary": "登出",
+        "operationId": "Sysuser_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LogoutReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/pwd": {
+      "put": {
+        "summary": "更新密码",
+        "operationId": "Sysuser_UpdatePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdatePasswordReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdatePasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/secret": {
+      "get": {
+        "summary": "生成密钥和二维码",
+        "operationId": "Sysuser_GetUserGoogleSecret",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserGoogleSecretReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    },
+    "/system/user/{id}": {
+      "delete": {
+        "summary": "删除用户",
+        "operationId": "Sysuser_DeleteSysuser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteSysuserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Sysuser"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AuthReplyRole": {
+      "type": "object",
+      "properties": {
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roleKey": {
+          "type": "string"
+        },
+        "roleSort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dataScope": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "apiIds": {
+          "$ref": "#/definitions/protobufAny"
+        },
+        "menuIds": {
+          "$ref": "#/definitions/protobufAny"
+        },
+        "deptIds": {
+          "$ref": "#/definitions/protobufAny"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "AuthReplyUser": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "salt": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "email": {
+          "type": "string"
+        },
+        "deptId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "postId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleIds": {
+          "type": "string"
+        },
+        "postIds": {
+          "type": "string"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "description": "Must be a valid serialized protocol buffer of the above specified type."
+        }
+      },
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\nExample 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\nExample 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AuthReply": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/AuthReplyUser"
+        },
+        "role": {
+          "$ref": "#/definitions/AuthReplyRole"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "menus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1MenuTreeAuth"
+          }
+        }
+      }
+    },
+    "v1ChangeStatusReply": {
+      "type": "object"
+    },
+    "v1ChangeStatusRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1CreateSysuserReply": {
+      "type": "object"
+    },
+    "v1CreateSysuserRequest": {
+      "type": "object",
+      "properties": {
+        "nickName": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "deptId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "postId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "postIds": {
+          "type": "string"
+        },
+        "roleIds": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
+    "v1DeleteSysuserReply": {
+      "type": "object"
+    },
+    "v1DeptTree": {
+      "type": "object",
+      "properties": {
+        "deptId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "parentId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deptPath": {
+          "type": "string"
+        },
+        "deptName": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "leader": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1DeptTree"
+          }
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1GetCaptchaReply": {
+      "type": "object",
+      "properties": {
+        "base64Captcha": {
+          "type": "string"
+        },
+        "captchaId": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetPostInitReply": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1RoleData"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1PostData"
+          }
+        }
+      }
+    },
+    "v1GetSysuserReply": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1UserData"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1RoleData"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1PostData"
+          }
+        },
+        "depts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1DeptTree"
+          }
+        },
+        "postIds": {
+          "type": "string"
+        },
+        "roleIds": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetUserGoogleSecretReply": {
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "string"
+        },
+        "qrcode": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetUserRolePostReply": {
+      "type": "object",
+      "properties": {
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1RoleData"
+          }
+        },
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1PostData"
+          }
+        }
+      }
+    },
+    "v1ListSysuserReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1UserData"
+          }
+        }
+      }
+    },
+    "v1LoginReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "expire": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1LoginRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      }
+    },
+    "v1LogoutReply": {
+      "type": "object"
+    },
+    "v1LogoutRequest": {
+      "type": "object"
+    },
+    "v1MenuTreeAuth": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "redirect": {
+          "type": "string"
+        },
+        "component": {
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/v1MenuTreeMeta"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1MenuTreeAuth"
+          }
+        },
+        "parentId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1MenuTreeMeta": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "isLink": {
+          "type": "boolean"
+        },
+        "isHide": {
+          "type": "boolean"
+        },
+        "isKeepAlive": {
+          "type": "boolean"
+        },
+        "isAffix": {
+          "type": "boolean"
+        },
+        "isIframe": {
+          "type": "boolean"
+        },
+        "auth": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "icon": {
+          "type": "string"
+        }
+      }
+    },
+    "v1PostData": {
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "postName": {
+          "type": "string"
+        },
+        "postCode": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1RoleData": {
+      "type": "object",
+      "properties": {
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roleKey": {
+          "type": "string"
+        },
+        "roleSort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "dataScope": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "menuIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1UpdatePasswordReply": {
+      "type": "object"
+    },
+    "v1UpdatePasswordRequest": {
+      "type": "object",
+      "properties": {
+        "newPassword": {
+          "type": "string"
+        },
+        "oldPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdateSysuserReply": {
+      "type": "object"
+    },
+    "v1UpdateSysuserRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "salt": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "email": {
+          "type": "string"
+        },
+        "deptId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "postId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "roleIds": {
+          "type": "string"
+        },
+        "postIds": {
+          "type": "string"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UserData": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nickName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "salt": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "sex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "deptId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "roleIds": {
+          "type": "string"
+        },
+        "postIds": {
+          "type": "string"
+        },
+        "createBy": {
+          "type": "string"
+        },
+        "updateBy": {
+          "type": "string"
+        },
+        "remark": {
+          "type": "string"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "deptName": {
+          "type": "string"
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "secret": {
+          "type": "string"
+        },
+        "qrcode": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

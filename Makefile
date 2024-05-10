@@ -38,7 +38,7 @@ http:
            --go_out=paths=source_relative:. \
            --go-http_out=paths=source_relative:. \
            --validate_out=paths=source_relative,lang=go:. \
-           --openapi_out=fq_schema_naming=true,default_response=false:../../../. \
+           --openapiv2_out=../../../. \
            $(API_PROTO_FILES)
 
 .PHONY: errors

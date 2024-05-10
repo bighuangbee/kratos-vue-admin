@@ -114,6 +114,7 @@ func NewHTTPServer(
 	}
 	if c.Http.Addr != "" {
 		opts = append(opts, http.Address(c.Http.Addr))
+		opts = append(opts, http.Address(c.Http.Addr))
 	}
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))

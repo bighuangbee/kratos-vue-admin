@@ -2,3 +2,4 @@
 # Editor directories and files
 .idea
 .vscode
+bin/server

@@ -53,8 +53,8 @@ func (receiver *AuthUseCase) Login(ctx context.Context, req *pb.LoginRequest) (t
 	}
 
 	if req.Code != code {
-		pErr = pb.ErrorCodeNotMatch(pkg.ErrGoogleCode)
-		return
+		//pErr = pb.ErrorCodeNotMatch(pkg.ErrGoogleCode)
+		//return
 	}
 
 	if !util.BcryptCheck(req.Password, user.Password) {
