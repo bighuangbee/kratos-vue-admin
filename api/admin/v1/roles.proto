@@ -30,6 +30,14 @@ service Roles{
       get: "/system/role/list"
     };
   };
+
+  // 全部角色选项
+  rpc Roles (ListRolesRequest) returns (ListRolesReply){
+    option (google.api.http) = {
+      get: "/system/role/roles"
+    };
+  };
+
   // 更改角色状态
   rpc ChangeRoleStatus (ChangeRoleStatusRequest) returns (ChangeRoleStatusReply) {
       option (google.api.http) = {

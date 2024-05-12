@@ -14,21 +14,21 @@ const TableNameSysUser = "sys_users"
 
 // SysUser mapped from table <sys_users>
 type SysUser struct {
-	ID        int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	ID        int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
 	UUID      string         `gorm:"column:uuid;type:varchar(64);not null;comment:用户UUID" json:"uuid"`
 	Username  string         `gorm:"column:username;type:varchar(64);not null;comment:用户名(登入)" json:"username"`
 	NickName  string         `gorm:"column:nick_name;type:varchar(64);not null;comment:昵称" json:"nick_name"`
 	Password  string         `gorm:"column:password;type:varchar(128);not null;comment:密码" json:"password"`
 	Phone     string         `gorm:"column:phone;type:varchar(16);not null;comment:手机" json:"phone"`
-	RoleID    int64          `gorm:"column:role_id;type:bigint(20);not null;comment:角色id" json:"role_id"`
+	RoleID    int64          `gorm:"column:role_id;type:bigint;not null;comment:角色id" json:"role_id"`
 	Salt      string         `gorm:"column:salt;type:varchar(255);not null;comment:盐" json:"salt"`
 	Avatar    string         `gorm:"column:avatar;type:varchar(255);not null;comment:头像" json:"avatar"`
-	Sex       int32          `gorm:"column:sex;type:tinyint(2);not null;comment:性别 0-未知 1-男 2-女" json:"sex"`
+	Sex       int32          `gorm:"column:sex;type:tinyint;not null;comment:性别 0-未知 1-男 2-女" json:"sex"`
 	Email     string         `gorm:"column:email;type:varchar(128);not null;comment:邮箱" json:"email"`
-	DeptID    int64          `gorm:"column:dept_id;type:bigint(20);not null;comment:部门id" json:"dept_id"`
-	PostID    int64          `gorm:"column:post_id;type:bigint(20);not null;comment:岗位id" json:"post_id"`
+	DeptID    int64          `gorm:"column:dept_id;type:bigint;not null;comment:部门id" json:"dept_id"`
+	PostID    int64          `gorm:"column:post_id;type:bigint;not null;comment:岗位id" json:"post_id"`
 	Remark    string         `gorm:"column:remark;type:varchar(255);not null;comment:备注" json:"remark"`
-	Status    int32          `gorm:"column:status;type:tinyint(2);not null;default:1;comment:1=正常 2=异常" json:"status"`
+	Status    int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:1=正常 2=异常" json:"status"`
 	RoleIds   string         `gorm:"column:role_ids;type:varchar(255);not null;comment:多角色" json:"role_ids"`
 	PostIds   string         `gorm:"column:post_ids;type:varchar(255);not null;comment:多岗位" json:"post_ids"`
 	CreateBy  string         `gorm:"column:create_by;type:varchar(128);not null;comment:创建人" json:"create_by"`

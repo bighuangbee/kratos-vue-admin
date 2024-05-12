@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newSysAPI(db *gorm.DB, opts ...gen.DOOption) sysAPI {
@@ -41,7 +42,7 @@ func newSysAPI(db *gorm.DB, opts ...gen.DOOption) sysAPI {
 }
 
 type sysAPI struct {
-	sysAPIDo sysAPIDo
+	sysAPIDo
 
 	ALL         field.Asterisk
 	ID          field.Int64  // 主键id
@@ -82,12 +83,6 @@ func (s *sysAPI) updateTableName(table string) *sysAPI {
 	return s
 }
 
-func (s *sysAPI) WithContext(ctx context.Context) *sysAPIDo { return s.sysAPIDo.WithContext(ctx) }
-
-func (s sysAPI) TableName() string { return s.sysAPIDo.TableName() }
-
-func (s sysAPI) Alias() string { return s.sysAPIDo.Alias() }
-
 func (s *sysAPI) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -121,99 +116,160 @@ func (s sysAPI) replaceDB(db *gorm.DB) sysAPI {
 
 type sysAPIDo struct{ gen.DO }
 
-func (s sysAPIDo) Debug() *sysAPIDo {
+type ISysAPIDo interface {
+	gen.SubQuery
+	Debug() ISysAPIDo
+	WithContext(ctx context.Context) ISysAPIDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysAPIDo
+	WriteDB() ISysAPIDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysAPIDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysAPIDo
+	Not(conds ...gen.Condition) ISysAPIDo
+	Or(conds ...gen.Condition) ISysAPIDo
+	Select(conds ...field.Expr) ISysAPIDo
+	Where(conds ...gen.Condition) ISysAPIDo
+	Order(conds ...field.Expr) ISysAPIDo
+	Distinct(cols ...field.Expr) ISysAPIDo
+	Omit(cols ...field.Expr) ISysAPIDo
+	Join(table schema.Tabler, on ...field.Expr) ISysAPIDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysAPIDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysAPIDo
+	Group(cols ...field.Expr) ISysAPIDo
+	Having(conds ...gen.Condition) ISysAPIDo
+	Limit(limit int) ISysAPIDo
+	Offset(offset int) ISysAPIDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysAPIDo
+	Unscoped() ISysAPIDo
+	Create(values ...*model.SysAPI) error
+	CreateInBatches(values []*model.SysAPI, batchSize int) error
+	Save(values ...*model.SysAPI) error
+	First() (*model.SysAPI, error)
+	Take() (*model.SysAPI, error)
+	Last() (*model.SysAPI, error)
+	Find() ([]*model.SysAPI, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysAPI, err error)
+	FindInBatches(result *[]*model.SysAPI, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysAPI) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysAPIDo
+	Assign(attrs ...field.AssignExpr) ISysAPIDo
+	Joins(fields ...field.RelationField) ISysAPIDo
+	Preload(fields ...field.RelationField) ISysAPIDo
+	FirstOrInit() (*model.SysAPI, error)
+	FirstOrCreate() (*model.SysAPI, error)
+	FindByPage(offset int, limit int) (result []*model.SysAPI, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysAPIDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysAPIDo) Debug() ISysAPIDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysAPIDo) WithContext(ctx context.Context) *sysAPIDo {
+func (s sysAPIDo) WithContext(ctx context.Context) ISysAPIDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysAPIDo) ReadDB() *sysAPIDo {
+func (s sysAPIDo) ReadDB() ISysAPIDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysAPIDo) WriteDB() *sysAPIDo {
+func (s sysAPIDo) WriteDB() ISysAPIDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysAPIDo) Session(config *gorm.Session) *sysAPIDo {
+func (s sysAPIDo) Session(config *gorm.Session) ISysAPIDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysAPIDo) Clauses(conds ...clause.Expression) *sysAPIDo {
+func (s sysAPIDo) Clauses(conds ...clause.Expression) ISysAPIDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysAPIDo) Returning(value interface{}, columns ...string) *sysAPIDo {
+func (s sysAPIDo) Returning(value interface{}, columns ...string) ISysAPIDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysAPIDo) Not(conds ...gen.Condition) *sysAPIDo {
+func (s sysAPIDo) Not(conds ...gen.Condition) ISysAPIDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysAPIDo) Or(conds ...gen.Condition) *sysAPIDo {
+func (s sysAPIDo) Or(conds ...gen.Condition) ISysAPIDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysAPIDo) Select(conds ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Select(conds ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysAPIDo) Where(conds ...gen.Condition) *sysAPIDo {
+func (s sysAPIDo) Where(conds ...gen.Condition) ISysAPIDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysAPIDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysAPIDo {
+func (s sysAPIDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysAPIDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysAPIDo) Order(conds ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Order(conds ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysAPIDo) Distinct(cols ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Distinct(cols ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysAPIDo) Omit(cols ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Omit(cols ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysAPIDo) Join(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Join(table schema.Tabler, on ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysAPIDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysAPIDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysAPIDo) Group(cols ...field.Expr) *sysAPIDo {
+func (s sysAPIDo) Group(cols ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysAPIDo) Having(conds ...gen.Condition) *sysAPIDo {
+func (s sysAPIDo) Having(conds ...gen.Condition) ISysAPIDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysAPIDo) Limit(limit int) *sysAPIDo {
+func (s sysAPIDo) Limit(limit int) ISysAPIDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysAPIDo) Offset(offset int) *sysAPIDo {
+func (s sysAPIDo) Offset(offset int) ISysAPIDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysAPIDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysAPIDo {
+func (s sysAPIDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysAPIDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysAPIDo) Unscoped() *sysAPIDo {
+func (s sysAPIDo) Unscoped() ISysAPIDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -279,22 +335,22 @@ func (s sysAPIDo) FindInBatches(result *[]*model.SysAPI, batchSize int, fc func(
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysAPIDo) Attrs(attrs ...field.AssignExpr) *sysAPIDo {
+func (s sysAPIDo) Attrs(attrs ...field.AssignExpr) ISysAPIDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysAPIDo) Assign(attrs ...field.AssignExpr) *sysAPIDo {
+func (s sysAPIDo) Assign(attrs ...field.AssignExpr) ISysAPIDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysAPIDo) Joins(fields ...field.RelationField) *sysAPIDo {
+func (s sysAPIDo) Joins(fields ...field.RelationField) ISysAPIDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysAPIDo) Preload(fields ...field.RelationField) *sysAPIDo {
+func (s sysAPIDo) Preload(fields ...field.RelationField) ISysAPIDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

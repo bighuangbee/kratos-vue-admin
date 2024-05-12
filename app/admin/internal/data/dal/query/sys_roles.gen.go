@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newSysRole(db *gorm.DB, opts ...gen.DOOption) sysRole {
@@ -47,7 +48,7 @@ func newSysRole(db *gorm.DB, opts ...gen.DOOption) sysRole {
 }
 
 type sysRole struct {
-	sysRoleDo sysRoleDo
+	sysRoleDo
 
 	ALL           field.Asterisk
 	ID            field.Int64  // 主键id
@@ -100,12 +101,6 @@ func (s *sysRole) updateTableName(table string) *sysRole {
 	return s
 }
 
-func (s *sysRole) WithContext(ctx context.Context) *sysRoleDo { return s.sysRoleDo.WithContext(ctx) }
-
-func (s sysRole) TableName() string { return s.sysRoleDo.TableName() }
-
-func (s sysRole) Alias() string { return s.sysRoleDo.Alias() }
-
 func (s *sysRole) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -145,99 +140,160 @@ func (s sysRole) replaceDB(db *gorm.DB) sysRole {
 
 type sysRoleDo struct{ gen.DO }
 
-func (s sysRoleDo) Debug() *sysRoleDo {
+type ISysRoleDo interface {
+	gen.SubQuery
+	Debug() ISysRoleDo
+	WithContext(ctx context.Context) ISysRoleDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysRoleDo
+	WriteDB() ISysRoleDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysRoleDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysRoleDo
+	Not(conds ...gen.Condition) ISysRoleDo
+	Or(conds ...gen.Condition) ISysRoleDo
+	Select(conds ...field.Expr) ISysRoleDo
+	Where(conds ...gen.Condition) ISysRoleDo
+	Order(conds ...field.Expr) ISysRoleDo
+	Distinct(cols ...field.Expr) ISysRoleDo
+	Omit(cols ...field.Expr) ISysRoleDo
+	Join(table schema.Tabler, on ...field.Expr) ISysRoleDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysRoleDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysRoleDo
+	Group(cols ...field.Expr) ISysRoleDo
+	Having(conds ...gen.Condition) ISysRoleDo
+	Limit(limit int) ISysRoleDo
+	Offset(offset int) ISysRoleDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysRoleDo
+	Unscoped() ISysRoleDo
+	Create(values ...*model.SysRole) error
+	CreateInBatches(values []*model.SysRole, batchSize int) error
+	Save(values ...*model.SysRole) error
+	First() (*model.SysRole, error)
+	Take() (*model.SysRole, error)
+	Last() (*model.SysRole, error)
+	Find() ([]*model.SysRole, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysRole, err error)
+	FindInBatches(result *[]*model.SysRole, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysRole) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysRoleDo
+	Assign(attrs ...field.AssignExpr) ISysRoleDo
+	Joins(fields ...field.RelationField) ISysRoleDo
+	Preload(fields ...field.RelationField) ISysRoleDo
+	FirstOrInit() (*model.SysRole, error)
+	FirstOrCreate() (*model.SysRole, error)
+	FindByPage(offset int, limit int) (result []*model.SysRole, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysRoleDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysRoleDo) Debug() ISysRoleDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysRoleDo) WithContext(ctx context.Context) *sysRoleDo {
+func (s sysRoleDo) WithContext(ctx context.Context) ISysRoleDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysRoleDo) ReadDB() *sysRoleDo {
+func (s sysRoleDo) ReadDB() ISysRoleDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysRoleDo) WriteDB() *sysRoleDo {
+func (s sysRoleDo) WriteDB() ISysRoleDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysRoleDo) Session(config *gorm.Session) *sysRoleDo {
+func (s sysRoleDo) Session(config *gorm.Session) ISysRoleDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysRoleDo) Clauses(conds ...clause.Expression) *sysRoleDo {
+func (s sysRoleDo) Clauses(conds ...clause.Expression) ISysRoleDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysRoleDo) Returning(value interface{}, columns ...string) *sysRoleDo {
+func (s sysRoleDo) Returning(value interface{}, columns ...string) ISysRoleDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysRoleDo) Not(conds ...gen.Condition) *sysRoleDo {
+func (s sysRoleDo) Not(conds ...gen.Condition) ISysRoleDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysRoleDo) Or(conds ...gen.Condition) *sysRoleDo {
+func (s sysRoleDo) Or(conds ...gen.Condition) ISysRoleDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysRoleDo) Select(conds ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Select(conds ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysRoleDo) Where(conds ...gen.Condition) *sysRoleDo {
+func (s sysRoleDo) Where(conds ...gen.Condition) ISysRoleDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysRoleDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysRoleDo {
+func (s sysRoleDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysRoleDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysRoleDo) Order(conds ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Order(conds ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysRoleDo) Distinct(cols ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Distinct(cols ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysRoleDo) Omit(cols ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Omit(cols ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysRoleDo) Join(table schema.Tabler, on ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Join(table schema.Tabler, on ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysRoleDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysRoleDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysRoleDo) Group(cols ...field.Expr) *sysRoleDo {
+func (s sysRoleDo) Group(cols ...field.Expr) ISysRoleDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysRoleDo) Having(conds ...gen.Condition) *sysRoleDo {
+func (s sysRoleDo) Having(conds ...gen.Condition) ISysRoleDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysRoleDo) Limit(limit int) *sysRoleDo {
+func (s sysRoleDo) Limit(limit int) ISysRoleDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysRoleDo) Offset(offset int) *sysRoleDo {
+func (s sysRoleDo) Offset(offset int) ISysRoleDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysRoleDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysRoleDo {
+func (s sysRoleDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysRoleDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysRoleDo) Unscoped() *sysRoleDo {
+func (s sysRoleDo) Unscoped() ISysRoleDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -303,22 +359,22 @@ func (s sysRoleDo) FindInBatches(result *[]*model.SysRole, batchSize int, fc fun
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysRoleDo) Attrs(attrs ...field.AssignExpr) *sysRoleDo {
+func (s sysRoleDo) Attrs(attrs ...field.AssignExpr) ISysRoleDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysRoleDo) Assign(attrs ...field.AssignExpr) *sysRoleDo {
+func (s sysRoleDo) Assign(attrs ...field.AssignExpr) ISysRoleDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysRoleDo) Joins(fields ...field.RelationField) *sysRoleDo {
+func (s sysRoleDo) Joins(fields ...field.RelationField) ISysRoleDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysRoleDo) Preload(fields ...field.RelationField) *sysRoleDo {
+func (s sysRoleDo) Preload(fields ...field.RelationField) ISysRoleDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

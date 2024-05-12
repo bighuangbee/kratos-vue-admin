@@ -187,6 +187,30 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "apiGroup",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1350,6 +1374,64 @@
       "get": {
         "summary": "角色列表",
         "operationId": "Roles_ListRoles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListRolesReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "roleName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "roleKey",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
+    "/system/role/roles": {
+      "get": {
+        "summary": "全部角色选项",
+        "operationId": "Roles_Roles",
         "responses": {
           "200": {
             "description": "A successful response.",

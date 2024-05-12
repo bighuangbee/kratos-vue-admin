@@ -24,6 +24,7 @@ type RolesHTTPServer interface {
 	DeleteRoles(context.Context, *DeleteRolesRequest) (*DeleteRolesReply, error)
 	GetRoles(context.Context, *GetRolesRequest) (*GetRolesReply, error)
 	ListRoles(context.Context, *ListRolesRequest) (*ListRolesReply, error)
+	Roles(context.Context, *ListRolesRequest) (*ListRolesReply, error)
 	UpdateRoles(context.Context, *UpdateRolesRequest) (*UpdateRolesReply, error)
 }
 
@@ -32,6 +33,7 @@ func RegisterRolesHTTPServer(s *http.Server, srv RolesHTTPServer) {
 	r.POST("/system/role", _Roles_CreateRoles0_HTTP_Handler(srv))
 	r.PUT("/system/role", _Roles_UpdateRoles0_HTTP_Handler(srv))
 	r.GET("/system/role/list", _Roles_ListRoles0_HTTP_Handler(srv))
+	r.GET("/system/role/roles", _Roles_Roles0_HTTP_Handler(srv))
 	r.PUT("/system/role/changeStatus", _Roles_ChangeRoleStatus0_HTTP_Handler(srv))
 	r.PUT("/system/role/dataScope", _Roles_DataScope0_HTTP_Handler(srv))
 	r.DELETE("/system/role/{id}", _Roles_DeleteRoles0_HTTP_Handler(srv))
@@ -85,6 +87,25 @@ func _Roles_ListRoles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) 
 		http.SetOperation(ctx, "/api.admin.v1.Roles/ListRoles")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ListRoles(ctx, req.(*ListRolesRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListRolesReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _Roles_Roles0_HTTP_Handler(srv RolesHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ListRolesRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/api.admin.v1.Roles/Roles")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.Roles(ctx, req.(*ListRolesRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -184,6 +205,7 @@ type RolesHTTPClient interface {
 	DeleteRoles(ctx context.Context, req *DeleteRolesRequest, opts ...http.CallOption) (rsp *DeleteRolesReply, err error)
 	GetRoles(ctx context.Context, req *GetRolesRequest, opts ...http.CallOption) (rsp *GetRolesReply, err error)
 	ListRoles(ctx context.Context, req *ListRolesRequest, opts ...http.CallOption) (rsp *ListRolesReply, err error)
+	Roles(ctx context.Context, req *ListRolesRequest, opts ...http.CallOption) (rsp *ListRolesReply, err error)
 	UpdateRoles(ctx context.Context, req *UpdateRolesRequest, opts ...http.CallOption) (rsp *UpdateRolesReply, err error)
 }
 
@@ -265,6 +287,19 @@ func (c *RolesHTTPClientImpl) ListRoles(ctx context.Context, in *ListRolesReques
 	pattern := "/system/role/list"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/api.admin.v1.Roles/ListRoles"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *RolesHTTPClientImpl) Roles(ctx context.Context, in *ListRolesRequest, opts ...http.CallOption) (*ListRolesReply, error) {
+	var out ListRolesReply
+	pattern := "/system/role/roles"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/api.admin.v1.Roles/Roles"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

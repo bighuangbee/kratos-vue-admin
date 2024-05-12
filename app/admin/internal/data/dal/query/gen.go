@@ -15,6 +15,48 @@ import (
 	"gorm.io/plugin/dbresolver"
 )
 
+var (
+	Q            = new(Query)
+	CasbinRule   *casbinRule
+	JwtBlacklist *jwtBlacklist
+	LogJob       *logJob
+	LogLogin     *logLogin
+	LogOper      *logOper
+	SysAPI       *sysAPI
+	SysDept      *sysDept
+	SysDictDatum *sysDictDatum
+	SysDictType  *sysDictType
+	SysMenu      *sysMenu
+	SysMenuBtn   *sysMenuBtn
+	SysPost      *sysPost
+	SysRole      *sysRole
+	SysRoleBtn   *sysRoleBtn
+	SysRoleDept  *sysRoleDept
+	SysRoleMenu  *sysRoleMenu
+	SysUser      *sysUser
+)
+
+func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
+	*Q = *Use(db, opts...)
+	CasbinRule = &Q.CasbinRule
+	JwtBlacklist = &Q.JwtBlacklist
+	LogJob = &Q.LogJob
+	LogLogin = &Q.LogLogin
+	LogOper = &Q.LogOper
+	SysAPI = &Q.SysAPI
+	SysDept = &Q.SysDept
+	SysDictDatum = &Q.SysDictDatum
+	SysDictType = &Q.SysDictType
+	SysMenu = &Q.SysMenu
+	SysMenuBtn = &Q.SysMenuBtn
+	SysPost = &Q.SysPost
+	SysRole = &Q.SysRole
+	SysRoleBtn = &Q.SysRoleBtn
+	SysRoleDept = &Q.SysRoleDept
+	SysRoleMenu = &Q.SysRoleMenu
+	SysUser = &Q.SysUser
+}
+
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:           db,
@@ -27,8 +69,6 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		SysDept:      newSysDept(db, opts...),
 		SysDictDatum: newSysDictDatum(db, opts...),
 		SysDictType:  newSysDictType(db, opts...),
-		SysDiscovery: newSysDiscovery(db, opts...),
-		SysJob:       newSysJob(db, opts...),
 		SysMenu:      newSysMenu(db, opts...),
 		SysMenuBtn:   newSysMenuBtn(db, opts...),
 		SysPost:      newSysPost(db, opts...),
@@ -52,8 +92,6 @@ type Query struct {
 	SysDept      sysDept
 	SysDictDatum sysDictDatum
 	SysDictType  sysDictType
-	SysDiscovery sysDiscovery
-	SysJob       sysJob
 	SysMenu      sysMenu
 	SysMenuBtn   sysMenuBtn
 	SysPost      sysPost
@@ -78,8 +116,6 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		SysDept:      q.SysDept.clone(db),
 		SysDictDatum: q.SysDictDatum.clone(db),
 		SysDictType:  q.SysDictType.clone(db),
-		SysDiscovery: q.SysDiscovery.clone(db),
-		SysJob:       q.SysJob.clone(db),
 		SysMenu:      q.SysMenu.clone(db),
 		SysMenuBtn:   q.SysMenuBtn.clone(db),
 		SysPost:      q.SysPost.clone(db),
@@ -111,8 +147,6 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		SysDept:      q.SysDept.replaceDB(db),
 		SysDictDatum: q.SysDictDatum.replaceDB(db),
 		SysDictType:  q.SysDictType.replaceDB(db),
-		SysDiscovery: q.SysDiscovery.replaceDB(db),
-		SysJob:       q.SysJob.replaceDB(db),
 		SysMenu:      q.SysMenu.replaceDB(db),
 		SysMenuBtn:   q.SysMenuBtn.replaceDB(db),
 		SysPost:      q.SysPost.replaceDB(db),
@@ -125,25 +159,23 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
-	CasbinRule   *casbinRuleDo
-	JwtBlacklist *jwtBlacklistDo
-	LogJob       *logJobDo
-	LogLogin     *logLoginDo
-	LogOper      *logOperDo
-	SysAPI       *sysAPIDo
-	SysDept      *sysDeptDo
-	SysDictDatum *sysDictDatumDo
-	SysDictType  *sysDictTypeDo
-	SysDiscovery *sysDiscoveryDo
-	SysJob       *sysJobDo
-	SysMenu      *sysMenuDo
-	SysMenuBtn   *sysMenuBtnDo
-	SysPost      *sysPostDo
-	SysRole      *sysRoleDo
-	SysRoleBtn   *sysRoleBtnDo
-	SysRoleDept  *sysRoleDeptDo
-	SysRoleMenu  *sysRoleMenuDo
-	SysUser      *sysUserDo
+	CasbinRule   ICasbinRuleDo
+	JwtBlacklist IJwtBlacklistDo
+	LogJob       ILogJobDo
+	LogLogin     ILogLoginDo
+	LogOper      ILogOperDo
+	SysAPI       ISysAPIDo
+	SysDept      ISysDeptDo
+	SysDictDatum ISysDictDatumDo
+	SysDictType  ISysDictTypeDo
+	SysMenu      ISysMenuDo
+	SysMenuBtn   ISysMenuBtnDo
+	SysPost      ISysPostDo
+	SysRole      ISysRoleDo
+	SysRoleBtn   ISysRoleBtnDo
+	SysRoleDept  ISysRoleDeptDo
+	SysRoleMenu  ISysRoleMenuDo
+	SysUser      ISysUserDo
 }
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
@@ -157,8 +189,6 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		SysDept:      q.SysDept.WithContext(ctx),
 		SysDictDatum: q.SysDictDatum.WithContext(ctx),
 		SysDictType:  q.SysDictType.WithContext(ctx),
-		SysDiscovery: q.SysDiscovery.WithContext(ctx),
-		SysJob:       q.SysJob.WithContext(ctx),
 		SysMenu:      q.SysMenu.WithContext(ctx),
 		SysMenuBtn:   q.SysMenuBtn.WithContext(ctx),
 		SysPost:      q.SysPost.WithContext(ctx),

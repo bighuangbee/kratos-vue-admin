@@ -8,7 +8,7 @@ const TableNameCasbinRule = "casbin_rule"
 
 // CasbinRule mapped from table <casbin_rule>
 type CasbinRule struct {
-	ID    int64  `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true" json:"id"`
+	ID    int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
 	Ptype string `gorm:"column:ptype;type:varchar(100);not null" json:"ptype"`
 	V0    string `gorm:"column:v0;type:varchar(100)" json:"v0"`
 	V1    string `gorm:"column:v1;type:varchar(100)" json:"v1"`

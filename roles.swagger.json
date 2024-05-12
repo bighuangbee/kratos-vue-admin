@@ -204,6 +204,64 @@
         ]
       }
     },
+    "/system/role/roles": {
+      "get": {
+        "summary": "全部角色选项",
+        "operationId": "Roles_Roles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListRolesReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageNum",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "roleName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "roleKey",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Roles"
+        ]
+      }
+    },
     "/system/role/{id}": {
       "get": {
         "summary": "获取角色",

@@ -14,13 +14,13 @@ const TableNameSysRole = "sys_roles"
 
 // SysRole mapped from table <sys_roles>
 type SysRole struct {
-	ID            int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	ParentID      int64          `gorm:"column:parent_id;type:bigint(20);not null;comment:父角色ID" json:"parent_id"`
+	ID            int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	ParentID      int64          `gorm:"column:parent_id;type:bigint;not null;comment:父角色ID" json:"parent_id"`
 	RoleName      string         `gorm:"column:role_name;type:varchar(128);not null;comment:角色名称" json:"role_name"`
-	Status        int32          `gorm:"column:status;type:tinyint(2);not null;default:1;comment:1=正常 2=异常" json:"status"`
+	Status        int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:1=正常 2=异常" json:"status"`
 	RoleKey       string         `gorm:"column:role_key;type:varchar(128);not null;comment:角色代码" json:"role_key"`
-	DataScope     int32          `gorm:"column:data_scope;type:tinyint(2);not null;default:1;comment:数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）" json:"data_scope"`
-	RoleSort      int32          `gorm:"column:role_sort;type:int(4);not null;comment:角色排序" json:"role_sort"`
+	DataScope     int32          `gorm:"column:data_scope;type:tinyint;not null;default:1;comment:数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）" json:"data_scope"`
+	RoleSort      int32          `gorm:"column:role_sort;type:int;not null;comment:角色排序" json:"role_sort"`
 	DefaultRouter string         `gorm:"column:default_router;type:varchar(191);not null;comment:默认菜单" json:"default_router"`
 	Remark        string         `gorm:"column:remark;type:varchar(255);not null;comment:备注" json:"remark"`
 	CreateBy      string         `gorm:"column:create_by;type:varchar(128);not null;comment:创建人" json:"create_by"`

@@ -46,7 +46,7 @@ func (a *ApiService) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Get
 }
 
 func (a *ApiService) ListApi(ctx context.Context, req *pb.ListApiRequest) (*pb.ListApiReply, error) {
-	apiList, total, err := a.apiUseCase.ListPage(ctx, req.PageNum, req.PageSize)
+	apiList, total, err := a.apiUseCase.ListPage(ctx, req.PageNum, req.PageSize, req.Path, req.Description, req.ApiGroup, req.Method)
 	if err != nil {
 		return nil, err
 	}

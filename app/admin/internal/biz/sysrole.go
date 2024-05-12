@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -21,6 +22,7 @@ type SysRoleRepo interface {
 	ListPage(ctx context.Context, name, key string, status int32, page, size int32) ([]*model.SysRole, error)
 	Count(ctx context.Context, name, key string, status int32) (int32, error)
 	Update(ctx context.Context, role *model.SysRole) error
+	Roles(ctx context.Context) ([]*model.SysRole, error)
 }
 
 type SysRoleUseCase struct {
@@ -52,6 +54,12 @@ func (r *SysRoleUseCase) ListPage(ctx context.Context, roleName, roleKey string,
 	}
 	roleList, err := r.repo.ListPage(ctx, roleName, roleKey, status, page, size)
 	return roleList, total, err
+}
+
+func (r *SysRoleUseCase) Roles(ctx context.Context) ([]*model.SysRole, error) {
+	fmt.Println("===!!@@#$$")
+	roles, err := r.repo.Roles(ctx)
+	return roles, err
 }
 
 func (r *SysRoleUseCase) GetRole(ctx context.Context, id int64) (*model.SysRole, error) {

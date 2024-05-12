@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newSysDept(db *gorm.DB, opts ...gen.DOOption) sysDept {
@@ -47,7 +48,7 @@ func newSysDept(db *gorm.DB, opts ...gen.DOOption) sysDept {
 }
 
 type sysDept struct {
-	sysDeptDo sysDeptDo
+	sysDeptDo
 
 	ALL       field.Asterisk
 	ID        field.Int64  // 主键id
@@ -100,12 +101,6 @@ func (s *sysDept) updateTableName(table string) *sysDept {
 	return s
 }
 
-func (s *sysDept) WithContext(ctx context.Context) *sysDeptDo { return s.sysDeptDo.WithContext(ctx) }
-
-func (s sysDept) TableName() string { return s.sysDeptDo.TableName() }
-
-func (s sysDept) Alias() string { return s.sysDeptDo.Alias() }
-
 func (s *sysDept) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -145,99 +140,160 @@ func (s sysDept) replaceDB(db *gorm.DB) sysDept {
 
 type sysDeptDo struct{ gen.DO }
 
-func (s sysDeptDo) Debug() *sysDeptDo {
+type ISysDeptDo interface {
+	gen.SubQuery
+	Debug() ISysDeptDo
+	WithContext(ctx context.Context) ISysDeptDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysDeptDo
+	WriteDB() ISysDeptDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysDeptDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysDeptDo
+	Not(conds ...gen.Condition) ISysDeptDo
+	Or(conds ...gen.Condition) ISysDeptDo
+	Select(conds ...field.Expr) ISysDeptDo
+	Where(conds ...gen.Condition) ISysDeptDo
+	Order(conds ...field.Expr) ISysDeptDo
+	Distinct(cols ...field.Expr) ISysDeptDo
+	Omit(cols ...field.Expr) ISysDeptDo
+	Join(table schema.Tabler, on ...field.Expr) ISysDeptDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysDeptDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysDeptDo
+	Group(cols ...field.Expr) ISysDeptDo
+	Having(conds ...gen.Condition) ISysDeptDo
+	Limit(limit int) ISysDeptDo
+	Offset(offset int) ISysDeptDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysDeptDo
+	Unscoped() ISysDeptDo
+	Create(values ...*model.SysDept) error
+	CreateInBatches(values []*model.SysDept, batchSize int) error
+	Save(values ...*model.SysDept) error
+	First() (*model.SysDept, error)
+	Take() (*model.SysDept, error)
+	Last() (*model.SysDept, error)
+	Find() ([]*model.SysDept, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDept, err error)
+	FindInBatches(result *[]*model.SysDept, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysDept) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysDeptDo
+	Assign(attrs ...field.AssignExpr) ISysDeptDo
+	Joins(fields ...field.RelationField) ISysDeptDo
+	Preload(fields ...field.RelationField) ISysDeptDo
+	FirstOrInit() (*model.SysDept, error)
+	FirstOrCreate() (*model.SysDept, error)
+	FindByPage(offset int, limit int) (result []*model.SysDept, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysDeptDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysDeptDo) Debug() ISysDeptDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysDeptDo) WithContext(ctx context.Context) *sysDeptDo {
+func (s sysDeptDo) WithContext(ctx context.Context) ISysDeptDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysDeptDo) ReadDB() *sysDeptDo {
+func (s sysDeptDo) ReadDB() ISysDeptDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysDeptDo) WriteDB() *sysDeptDo {
+func (s sysDeptDo) WriteDB() ISysDeptDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysDeptDo) Session(config *gorm.Session) *sysDeptDo {
+func (s sysDeptDo) Session(config *gorm.Session) ISysDeptDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysDeptDo) Clauses(conds ...clause.Expression) *sysDeptDo {
+func (s sysDeptDo) Clauses(conds ...clause.Expression) ISysDeptDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysDeptDo) Returning(value interface{}, columns ...string) *sysDeptDo {
+func (s sysDeptDo) Returning(value interface{}, columns ...string) ISysDeptDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysDeptDo) Not(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptDo) Not(conds ...gen.Condition) ISysDeptDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysDeptDo) Or(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptDo) Or(conds ...gen.Condition) ISysDeptDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysDeptDo) Select(conds ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Select(conds ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysDeptDo) Where(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptDo) Where(conds ...gen.Condition) ISysDeptDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDeptDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDeptDo {
+func (s sysDeptDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysDeptDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysDeptDo) Order(conds ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Order(conds ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysDeptDo) Distinct(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Distinct(cols ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysDeptDo) Omit(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Omit(cols ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysDeptDo) Join(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Join(table schema.Tabler, on ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysDeptDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysDeptDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysDeptDo) Group(cols ...field.Expr) *sysDeptDo {
+func (s sysDeptDo) Group(cols ...field.Expr) ISysDeptDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysDeptDo) Having(conds ...gen.Condition) *sysDeptDo {
+func (s sysDeptDo) Having(conds ...gen.Condition) ISysDeptDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysDeptDo) Limit(limit int) *sysDeptDo {
+func (s sysDeptDo) Limit(limit int) ISysDeptDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysDeptDo) Offset(offset int) *sysDeptDo {
+func (s sysDeptDo) Offset(offset int) ISysDeptDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysDeptDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDeptDo {
+func (s sysDeptDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysDeptDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysDeptDo) Unscoped() *sysDeptDo {
+func (s sysDeptDo) Unscoped() ISysDeptDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -303,22 +359,22 @@ func (s sysDeptDo) FindInBatches(result *[]*model.SysDept, batchSize int, fc fun
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysDeptDo) Attrs(attrs ...field.AssignExpr) *sysDeptDo {
+func (s sysDeptDo) Attrs(attrs ...field.AssignExpr) ISysDeptDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysDeptDo) Assign(attrs ...field.AssignExpr) *sysDeptDo {
+func (s sysDeptDo) Assign(attrs ...field.AssignExpr) ISysDeptDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysDeptDo) Joins(fields ...field.RelationField) *sysDeptDo {
+func (s sysDeptDo) Joins(fields ...field.RelationField) ISysDeptDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysDeptDo) Preload(fields ...field.RelationField) *sysDeptDo {
+func (s sysDeptDo) Preload(fields ...field.RelationField) ISysDeptDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

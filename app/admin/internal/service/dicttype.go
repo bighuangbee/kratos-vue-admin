@@ -40,8 +40,8 @@ func (s *DictTypeService) ListDictType(ctx context.Context, req *pb.ListDictType
 			Remark:     d.Remark,
 			CreateBy:   d.CreateBy,
 			UpdateBy:   d.UpdateBy,
-			CreateTime: util.NewTimestamp(d.CreateTime),
-			UpdateTime: util.NewTimestamp(d.UpdateTime),
+			CreateTime: util.NewTimestamp(d.CreatedAt),
+			UpdateTime: util.NewTimestamp(d.UpdatedAt),
 		}
 	}
 

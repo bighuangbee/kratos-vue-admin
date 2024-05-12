@@ -73,6 +73,10 @@ message GetApiReply{
 message ListApiRequest{
   int32 pageNum = 1;
   int32 pageSize = 2;
+  string path = 3;
+  string apiGroup = 4;
+  string method = 5;
+  string description = 6;
 };
 message ListApiReply{
   int32 total = 1;

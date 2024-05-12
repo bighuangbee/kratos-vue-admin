@@ -14,7 +14,7 @@ type SysApiRepo interface {
 	Save(ctx context.Context, api *model.SysAPI) error
 	Delete(ctx context.Context, id int64) error
 	FindAll(ctx context.Context) ([]*model.SysAPI, error)
-	ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, error)
+	ListPage(ctx context.Context, page, size int32, path string, description string, group string, method string) ([]*model.SysAPI, error)
 	ListPageCount(ctx context.Context) (int32, error)
 }
 
@@ -32,12 +32,12 @@ func NewSysApiUseCase(repo SysApiRepo, casbinRepo CasbinRuleRepo, logger log.Log
 	}
 }
 
-func (a *SysApiUseCase) ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, int32, error) {
+func (a *SysApiUseCase) ListPage(ctx context.Context, page, size int32, path, description string, group, method string) ([]*model.SysAPI, int32, error) {
 	total, err := a.apiRepo.ListPageCount(ctx)
 	if err != nil || total == 0 {
 		return nil, 0, err
 	}
-	apis, err := a.apiRepo.ListPage(ctx, page, size)
+	apis, err := a.apiRepo.ListPage(ctx, page, size, path, description, group, method)
 	return apis, total, err
 }
 

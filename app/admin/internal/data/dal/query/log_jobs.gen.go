@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newLogJob(db *gorm.DB, opts ...gen.DOOption) logJob {
@@ -43,7 +44,7 @@ func newLogJob(db *gorm.DB, opts ...gen.DOOption) logJob {
 }
 
 type logJob struct {
-	logJobDo logJobDo
+	logJobDo
 
 	ALL          field.Asterisk
 	ID           field.Int64  // 主键id
@@ -88,12 +89,6 @@ func (l *logJob) updateTableName(table string) *logJob {
 	return l
 }
 
-func (l *logJob) WithContext(ctx context.Context) *logJobDo { return l.logJobDo.WithContext(ctx) }
-
-func (l logJob) TableName() string { return l.logJobDo.TableName() }
-
-func (l logJob) Alias() string { return l.logJobDo.Alias() }
-
 func (l *logJob) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := l.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -129,99 +124,160 @@ func (l logJob) replaceDB(db *gorm.DB) logJob {
 
 type logJobDo struct{ gen.DO }
 
-func (l logJobDo) Debug() *logJobDo {
+type ILogJobDo interface {
+	gen.SubQuery
+	Debug() ILogJobDo
+	WithContext(ctx context.Context) ILogJobDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ILogJobDo
+	WriteDB() ILogJobDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ILogJobDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ILogJobDo
+	Not(conds ...gen.Condition) ILogJobDo
+	Or(conds ...gen.Condition) ILogJobDo
+	Select(conds ...field.Expr) ILogJobDo
+	Where(conds ...gen.Condition) ILogJobDo
+	Order(conds ...field.Expr) ILogJobDo
+	Distinct(cols ...field.Expr) ILogJobDo
+	Omit(cols ...field.Expr) ILogJobDo
+	Join(table schema.Tabler, on ...field.Expr) ILogJobDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ILogJobDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ILogJobDo
+	Group(cols ...field.Expr) ILogJobDo
+	Having(conds ...gen.Condition) ILogJobDo
+	Limit(limit int) ILogJobDo
+	Offset(offset int) ILogJobDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ILogJobDo
+	Unscoped() ILogJobDo
+	Create(values ...*model.LogJob) error
+	CreateInBatches(values []*model.LogJob, batchSize int) error
+	Save(values ...*model.LogJob) error
+	First() (*model.LogJob, error)
+	Take() (*model.LogJob, error)
+	Last() (*model.LogJob, error)
+	Find() ([]*model.LogJob, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogJob, err error)
+	FindInBatches(result *[]*model.LogJob, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.LogJob) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ILogJobDo
+	Assign(attrs ...field.AssignExpr) ILogJobDo
+	Joins(fields ...field.RelationField) ILogJobDo
+	Preload(fields ...field.RelationField) ILogJobDo
+	FirstOrInit() (*model.LogJob, error)
+	FirstOrCreate() (*model.LogJob, error)
+	FindByPage(offset int, limit int) (result []*model.LogJob, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ILogJobDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (l logJobDo) Debug() ILogJobDo {
 	return l.withDO(l.DO.Debug())
 }
 
-func (l logJobDo) WithContext(ctx context.Context) *logJobDo {
+func (l logJobDo) WithContext(ctx context.Context) ILogJobDo {
 	return l.withDO(l.DO.WithContext(ctx))
 }
 
-func (l logJobDo) ReadDB() *logJobDo {
+func (l logJobDo) ReadDB() ILogJobDo {
 	return l.Clauses(dbresolver.Read)
 }
 
-func (l logJobDo) WriteDB() *logJobDo {
+func (l logJobDo) WriteDB() ILogJobDo {
 	return l.Clauses(dbresolver.Write)
 }
 
-func (l logJobDo) Session(config *gorm.Session) *logJobDo {
+func (l logJobDo) Session(config *gorm.Session) ILogJobDo {
 	return l.withDO(l.DO.Session(config))
 }
 
-func (l logJobDo) Clauses(conds ...clause.Expression) *logJobDo {
+func (l logJobDo) Clauses(conds ...clause.Expression) ILogJobDo {
 	return l.withDO(l.DO.Clauses(conds...))
 }
 
-func (l logJobDo) Returning(value interface{}, columns ...string) *logJobDo {
+func (l logJobDo) Returning(value interface{}, columns ...string) ILogJobDo {
 	return l.withDO(l.DO.Returning(value, columns...))
 }
 
-func (l logJobDo) Not(conds ...gen.Condition) *logJobDo {
+func (l logJobDo) Not(conds ...gen.Condition) ILogJobDo {
 	return l.withDO(l.DO.Not(conds...))
 }
 
-func (l logJobDo) Or(conds ...gen.Condition) *logJobDo {
+func (l logJobDo) Or(conds ...gen.Condition) ILogJobDo {
 	return l.withDO(l.DO.Or(conds...))
 }
 
-func (l logJobDo) Select(conds ...field.Expr) *logJobDo {
+func (l logJobDo) Select(conds ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Select(conds...))
 }
 
-func (l logJobDo) Where(conds ...gen.Condition) *logJobDo {
+func (l logJobDo) Where(conds ...gen.Condition) ILogJobDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logJobDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logJobDo {
+func (l logJobDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ILogJobDo {
 	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (l logJobDo) Order(conds ...field.Expr) *logJobDo {
+func (l logJobDo) Order(conds ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Order(conds...))
 }
 
-func (l logJobDo) Distinct(cols ...field.Expr) *logJobDo {
+func (l logJobDo) Distinct(cols ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Distinct(cols...))
 }
 
-func (l logJobDo) Omit(cols ...field.Expr) *logJobDo {
+func (l logJobDo) Omit(cols ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Omit(cols...))
 }
 
-func (l logJobDo) Join(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobDo) Join(table schema.Tabler, on ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Join(table, on...))
 }
 
-func (l logJobDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobDo) LeftJoin(table schema.Tabler, on ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.LeftJoin(table, on...))
 }
 
-func (l logJobDo) RightJoin(table schema.Tabler, on ...field.Expr) *logJobDo {
+func (l logJobDo) RightJoin(table schema.Tabler, on ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.RightJoin(table, on...))
 }
 
-func (l logJobDo) Group(cols ...field.Expr) *logJobDo {
+func (l logJobDo) Group(cols ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Group(cols...))
 }
 
-func (l logJobDo) Having(conds ...gen.Condition) *logJobDo {
+func (l logJobDo) Having(conds ...gen.Condition) ILogJobDo {
 	return l.withDO(l.DO.Having(conds...))
 }
 
-func (l logJobDo) Limit(limit int) *logJobDo {
+func (l logJobDo) Limit(limit int) ILogJobDo {
 	return l.withDO(l.DO.Limit(limit))
 }
 
-func (l logJobDo) Offset(offset int) *logJobDo {
+func (l logJobDo) Offset(offset int) ILogJobDo {
 	return l.withDO(l.DO.Offset(offset))
 }
 
-func (l logJobDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logJobDo {
+func (l logJobDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ILogJobDo {
 	return l.withDO(l.DO.Scopes(funcs...))
 }
 
-func (l logJobDo) Unscoped() *logJobDo {
+func (l logJobDo) Unscoped() ILogJobDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
@@ -287,22 +343,22 @@ func (l logJobDo) FindInBatches(result *[]*model.LogJob, batchSize int, fc func(
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (l logJobDo) Attrs(attrs ...field.AssignExpr) *logJobDo {
+func (l logJobDo) Attrs(attrs ...field.AssignExpr) ILogJobDo {
 	return l.withDO(l.DO.Attrs(attrs...))
 }
 
-func (l logJobDo) Assign(attrs ...field.AssignExpr) *logJobDo {
+func (l logJobDo) Assign(attrs ...field.AssignExpr) ILogJobDo {
 	return l.withDO(l.DO.Assign(attrs...))
 }
 
-func (l logJobDo) Joins(fields ...field.RelationField) *logJobDo {
+func (l logJobDo) Joins(fields ...field.RelationField) ILogJobDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Joins(_f))
 	}
 	return &l
 }
 
-func (l logJobDo) Preload(fields ...field.RelationField) *logJobDo {
+func (l logJobDo) Preload(fields ...field.RelationField) ILogJobDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Preload(_f))
 	}

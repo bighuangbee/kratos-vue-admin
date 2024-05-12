@@ -14,9 +14,9 @@ const TableNameLogLogin = "log_logins"
 
 // LogLogin mapped from table <log_logins>
 type LogLogin struct {
-	ID            int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	ID            int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
 	Username      string         `gorm:"column:username;type:varchar(128);not null;comment:用户名" json:"username"`
-	Status        int32          `gorm:"column:status;type:tinyint(2);not null;default:1;comment:1=正常 2=异常" json:"status"`
+	Status        int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:1=正常 2=异常" json:"status"`
 	Ipaddr        string         `gorm:"column:ipaddr;type:varchar(255);not null;comment:ip地址" json:"ipaddr"`
 	LoginLocation string         `gorm:"column:login_location;type:varchar(255);not null;comment:归属地" json:"login_location"`
 	Browser       string         `gorm:"column:browser;type:varchar(255);not null;comment:浏览器" json:"browser"`

@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newSysUser(db *gorm.DB, opts ...gen.DOOption) sysUser {
@@ -56,7 +57,7 @@ func newSysUser(db *gorm.DB, opts ...gen.DOOption) sysUser {
 }
 
 type sysUser struct {
-	sysUserDo sysUserDo
+	sysUserDo
 
 	ALL       field.Asterisk
 	ID        field.Int64  // 主键id
@@ -127,12 +128,6 @@ func (s *sysUser) updateTableName(table string) *sysUser {
 	return s
 }
 
-func (s *sysUser) WithContext(ctx context.Context) *sysUserDo { return s.sysUserDo.WithContext(ctx) }
-
-func (s sysUser) TableName() string { return s.sysUserDo.TableName() }
-
-func (s sysUser) Alias() string { return s.sysUserDo.Alias() }
-
 func (s *sysUser) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -181,99 +176,160 @@ func (s sysUser) replaceDB(db *gorm.DB) sysUser {
 
 type sysUserDo struct{ gen.DO }
 
-func (s sysUserDo) Debug() *sysUserDo {
+type ISysUserDo interface {
+	gen.SubQuery
+	Debug() ISysUserDo
+	WithContext(ctx context.Context) ISysUserDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysUserDo
+	WriteDB() ISysUserDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysUserDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysUserDo
+	Not(conds ...gen.Condition) ISysUserDo
+	Or(conds ...gen.Condition) ISysUserDo
+	Select(conds ...field.Expr) ISysUserDo
+	Where(conds ...gen.Condition) ISysUserDo
+	Order(conds ...field.Expr) ISysUserDo
+	Distinct(cols ...field.Expr) ISysUserDo
+	Omit(cols ...field.Expr) ISysUserDo
+	Join(table schema.Tabler, on ...field.Expr) ISysUserDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysUserDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysUserDo
+	Group(cols ...field.Expr) ISysUserDo
+	Having(conds ...gen.Condition) ISysUserDo
+	Limit(limit int) ISysUserDo
+	Offset(offset int) ISysUserDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysUserDo
+	Unscoped() ISysUserDo
+	Create(values ...*model.SysUser) error
+	CreateInBatches(values []*model.SysUser, batchSize int) error
+	Save(values ...*model.SysUser) error
+	First() (*model.SysUser, error)
+	Take() (*model.SysUser, error)
+	Last() (*model.SysUser, error)
+	Find() ([]*model.SysUser, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysUser, err error)
+	FindInBatches(result *[]*model.SysUser, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysUser) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysUserDo
+	Assign(attrs ...field.AssignExpr) ISysUserDo
+	Joins(fields ...field.RelationField) ISysUserDo
+	Preload(fields ...field.RelationField) ISysUserDo
+	FirstOrInit() (*model.SysUser, error)
+	FirstOrCreate() (*model.SysUser, error)
+	FindByPage(offset int, limit int) (result []*model.SysUser, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysUserDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysUserDo) Debug() ISysUserDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysUserDo) WithContext(ctx context.Context) *sysUserDo {
+func (s sysUserDo) WithContext(ctx context.Context) ISysUserDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysUserDo) ReadDB() *sysUserDo {
+func (s sysUserDo) ReadDB() ISysUserDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysUserDo) WriteDB() *sysUserDo {
+func (s sysUserDo) WriteDB() ISysUserDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysUserDo) Session(config *gorm.Session) *sysUserDo {
+func (s sysUserDo) Session(config *gorm.Session) ISysUserDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysUserDo) Clauses(conds ...clause.Expression) *sysUserDo {
+func (s sysUserDo) Clauses(conds ...clause.Expression) ISysUserDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysUserDo) Returning(value interface{}, columns ...string) *sysUserDo {
+func (s sysUserDo) Returning(value interface{}, columns ...string) ISysUserDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysUserDo) Not(conds ...gen.Condition) *sysUserDo {
+func (s sysUserDo) Not(conds ...gen.Condition) ISysUserDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysUserDo) Or(conds ...gen.Condition) *sysUserDo {
+func (s sysUserDo) Or(conds ...gen.Condition) ISysUserDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysUserDo) Select(conds ...field.Expr) *sysUserDo {
+func (s sysUserDo) Select(conds ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysUserDo) Where(conds ...gen.Condition) *sysUserDo {
+func (s sysUserDo) Where(conds ...gen.Condition) ISysUserDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysUserDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysUserDo {
+func (s sysUserDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysUserDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysUserDo) Order(conds ...field.Expr) *sysUserDo {
+func (s sysUserDo) Order(conds ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysUserDo) Distinct(cols ...field.Expr) *sysUserDo {
+func (s sysUserDo) Distinct(cols ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysUserDo) Omit(cols ...field.Expr) *sysUserDo {
+func (s sysUserDo) Omit(cols ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysUserDo) Join(table schema.Tabler, on ...field.Expr) *sysUserDo {
+func (s sysUserDo) Join(table schema.Tabler, on ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysUserDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysUserDo {
+func (s sysUserDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysUserDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysUserDo {
+func (s sysUserDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysUserDo) Group(cols ...field.Expr) *sysUserDo {
+func (s sysUserDo) Group(cols ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysUserDo) Having(conds ...gen.Condition) *sysUserDo {
+func (s sysUserDo) Having(conds ...gen.Condition) ISysUserDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysUserDo) Limit(limit int) *sysUserDo {
+func (s sysUserDo) Limit(limit int) ISysUserDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysUserDo) Offset(offset int) *sysUserDo {
+func (s sysUserDo) Offset(offset int) ISysUserDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysUserDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysUserDo {
+func (s sysUserDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysUserDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysUserDo) Unscoped() *sysUserDo {
+func (s sysUserDo) Unscoped() ISysUserDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -339,22 +395,22 @@ func (s sysUserDo) FindInBatches(result *[]*model.SysUser, batchSize int, fc fun
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysUserDo) Attrs(attrs ...field.AssignExpr) *sysUserDo {
+func (s sysUserDo) Attrs(attrs ...field.AssignExpr) ISysUserDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysUserDo) Assign(attrs ...field.AssignExpr) *sysUserDo {
+func (s sysUserDo) Assign(attrs ...field.AssignExpr) ISysUserDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysUserDo) Joins(fields ...field.RelationField) *sysUserDo {
+func (s sysUserDo) Joins(fields ...field.RelationField) ISysUserDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysUserDo) Preload(fields ...field.RelationField) *sysUserDo {
+func (s sysUserDo) Preload(fields ...field.RelationField) ISysUserDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

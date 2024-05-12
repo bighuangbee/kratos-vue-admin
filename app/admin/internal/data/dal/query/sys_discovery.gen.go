@@ -40,7 +40,7 @@ func newSysDiscovery(db *gorm.DB, opts ...gen.DOOption) sysDiscovery {
 }
 
 type sysDiscovery struct {
-	sysDiscoveryDo sysDiscoveryDo
+	sysDiscoveryDo
 
 	ALL     field.Asterisk
 	ID      field.Int32
@@ -77,14 +77,6 @@ func (s *sysDiscovery) updateTableName(table string) *sysDiscovery {
 	return s
 }
 
-func (s *sysDiscovery) WithContext(ctx context.Context) *sysDiscoveryDo {
-	return s.sysDiscoveryDo.WithContext(ctx)
-}
-
-func (s sysDiscovery) TableName() string { return s.sysDiscoveryDo.TableName() }
-
-func (s sysDiscovery) Alias() string { return s.sysDiscoveryDo.Alias() }
-
 func (s *sysDiscovery) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -116,99 +108,160 @@ func (s sysDiscovery) replaceDB(db *gorm.DB) sysDiscovery {
 
 type sysDiscoveryDo struct{ gen.DO }
 
-func (s sysDiscoveryDo) Debug() *sysDiscoveryDo {
+type ISysDiscoveryDo interface {
+	gen.SubQuery
+	Debug() ISysDiscoveryDo
+	WithContext(ctx context.Context) ISysDiscoveryDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysDiscoveryDo
+	WriteDB() ISysDiscoveryDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysDiscoveryDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysDiscoveryDo
+	Not(conds ...gen.Condition) ISysDiscoveryDo
+	Or(conds ...gen.Condition) ISysDiscoveryDo
+	Select(conds ...field.Expr) ISysDiscoveryDo
+	Where(conds ...gen.Condition) ISysDiscoveryDo
+	Order(conds ...field.Expr) ISysDiscoveryDo
+	Distinct(cols ...field.Expr) ISysDiscoveryDo
+	Omit(cols ...field.Expr) ISysDiscoveryDo
+	Join(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo
+	Group(cols ...field.Expr) ISysDiscoveryDo
+	Having(conds ...gen.Condition) ISysDiscoveryDo
+	Limit(limit int) ISysDiscoveryDo
+	Offset(offset int) ISysDiscoveryDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysDiscoveryDo
+	Unscoped() ISysDiscoveryDo
+	Create(values ...*model.SysDiscovery) error
+	CreateInBatches(values []*model.SysDiscovery, batchSize int) error
+	Save(values ...*model.SysDiscovery) error
+	First() (*model.SysDiscovery, error)
+	Take() (*model.SysDiscovery, error)
+	Last() (*model.SysDiscovery, error)
+	Find() ([]*model.SysDiscovery, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysDiscovery, err error)
+	FindInBatches(result *[]*model.SysDiscovery, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysDiscovery) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysDiscoveryDo
+	Assign(attrs ...field.AssignExpr) ISysDiscoveryDo
+	Joins(fields ...field.RelationField) ISysDiscoveryDo
+	Preload(fields ...field.RelationField) ISysDiscoveryDo
+	FirstOrInit() (*model.SysDiscovery, error)
+	FirstOrCreate() (*model.SysDiscovery, error)
+	FindByPage(offset int, limit int) (result []*model.SysDiscovery, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysDiscoveryDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysDiscoveryDo) Debug() ISysDiscoveryDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysDiscoveryDo) WithContext(ctx context.Context) *sysDiscoveryDo {
+func (s sysDiscoveryDo) WithContext(ctx context.Context) ISysDiscoveryDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysDiscoveryDo) ReadDB() *sysDiscoveryDo {
+func (s sysDiscoveryDo) ReadDB() ISysDiscoveryDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysDiscoveryDo) WriteDB() *sysDiscoveryDo {
+func (s sysDiscoveryDo) WriteDB() ISysDiscoveryDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysDiscoveryDo) Session(config *gorm.Session) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Session(config *gorm.Session) ISysDiscoveryDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysDiscoveryDo) Clauses(conds ...clause.Expression) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Clauses(conds ...clause.Expression) ISysDiscoveryDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysDiscoveryDo) Returning(value interface{}, columns ...string) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Returning(value interface{}, columns ...string) ISysDiscoveryDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysDiscoveryDo) Not(conds ...gen.Condition) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Not(conds ...gen.Condition) ISysDiscoveryDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysDiscoveryDo) Or(conds ...gen.Condition) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Or(conds ...gen.Condition) ISysDiscoveryDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysDiscoveryDo) Select(conds ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Select(conds ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysDiscoveryDo) Where(conds ...gen.Condition) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Where(conds ...gen.Condition) ISysDiscoveryDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDiscoveryDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysDiscoveryDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysDiscoveryDo) Order(conds ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Order(conds ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysDiscoveryDo) Distinct(cols ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Distinct(cols ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysDiscoveryDo) Omit(cols ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Omit(cols ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysDiscoveryDo) Join(table schema.Tabler, on ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Join(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysDiscoveryDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysDiscoveryDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysDiscoveryDo) Group(cols ...field.Expr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Group(cols ...field.Expr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysDiscoveryDo) Having(conds ...gen.Condition) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Having(conds ...gen.Condition) ISysDiscoveryDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysDiscoveryDo) Limit(limit int) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Limit(limit int) ISysDiscoveryDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysDiscoveryDo) Offset(offset int) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Offset(offset int) ISysDiscoveryDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysDiscoveryDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysDiscoveryDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysDiscoveryDo) Unscoped() *sysDiscoveryDo {
+func (s sysDiscoveryDo) Unscoped() ISysDiscoveryDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -274,22 +327,22 @@ func (s sysDiscoveryDo) FindInBatches(result *[]*model.SysDiscovery, batchSize i
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysDiscoveryDo) Attrs(attrs ...field.AssignExpr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Attrs(attrs ...field.AssignExpr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysDiscoveryDo) Assign(attrs ...field.AssignExpr) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Assign(attrs ...field.AssignExpr) ISysDiscoveryDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysDiscoveryDo) Joins(fields ...field.RelationField) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Joins(fields ...field.RelationField) ISysDiscoveryDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysDiscoveryDo) Preload(fields ...field.RelationField) *sysDiscoveryDo {
+func (s sysDiscoveryDo) Preload(fields ...field.RelationField) ISysDiscoveryDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

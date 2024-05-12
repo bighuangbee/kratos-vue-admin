@@ -45,8 +45,8 @@ func (s *DictDataService) ListDictData(ctx context.Context, req *pb.ListDictData
 			Remark:     d.Remark,
 			CreateBy:   d.CreateBy,
 			UpdateBy:   d.UpdateBy,
-			CreateTime: util.NewTimestamp(d.CreateTime),
-			UpdateTime: util.NewTimestamp(d.UpdateTime),
+			CreateTime: util.NewTimestamp(d.CreatedAt),
+			UpdateTime: util.NewTimestamp(d.CreatedAt),
 		}
 	}
 

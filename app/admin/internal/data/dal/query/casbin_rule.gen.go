@@ -42,7 +42,7 @@ func newCasbinRule(db *gorm.DB, opts ...gen.DOOption) casbinRule {
 }
 
 type casbinRule struct {
-	casbinRuleDo casbinRuleDo
+	casbinRuleDo
 
 	ALL   field.Asterisk
 	ID    field.Int64
@@ -83,14 +83,6 @@ func (c *casbinRule) updateTableName(table string) *casbinRule {
 	return c
 }
 
-func (c *casbinRule) WithContext(ctx context.Context) *casbinRuleDo {
-	return c.casbinRuleDo.WithContext(ctx)
-}
-
-func (c casbinRule) TableName() string { return c.casbinRuleDo.TableName() }
-
-func (c casbinRule) Alias() string { return c.casbinRuleDo.Alias() }
-
 func (c *casbinRule) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := c.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -124,99 +116,160 @@ func (c casbinRule) replaceDB(db *gorm.DB) casbinRule {
 
 type casbinRuleDo struct{ gen.DO }
 
-func (c casbinRuleDo) Debug() *casbinRuleDo {
+type ICasbinRuleDo interface {
+	gen.SubQuery
+	Debug() ICasbinRuleDo
+	WithContext(ctx context.Context) ICasbinRuleDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ICasbinRuleDo
+	WriteDB() ICasbinRuleDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ICasbinRuleDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ICasbinRuleDo
+	Not(conds ...gen.Condition) ICasbinRuleDo
+	Or(conds ...gen.Condition) ICasbinRuleDo
+	Select(conds ...field.Expr) ICasbinRuleDo
+	Where(conds ...gen.Condition) ICasbinRuleDo
+	Order(conds ...field.Expr) ICasbinRuleDo
+	Distinct(cols ...field.Expr) ICasbinRuleDo
+	Omit(cols ...field.Expr) ICasbinRuleDo
+	Join(table schema.Tabler, on ...field.Expr) ICasbinRuleDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ICasbinRuleDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ICasbinRuleDo
+	Group(cols ...field.Expr) ICasbinRuleDo
+	Having(conds ...gen.Condition) ICasbinRuleDo
+	Limit(limit int) ICasbinRuleDo
+	Offset(offset int) ICasbinRuleDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ICasbinRuleDo
+	Unscoped() ICasbinRuleDo
+	Create(values ...*model.CasbinRule) error
+	CreateInBatches(values []*model.CasbinRule, batchSize int) error
+	Save(values ...*model.CasbinRule) error
+	First() (*model.CasbinRule, error)
+	Take() (*model.CasbinRule, error)
+	Last() (*model.CasbinRule, error)
+	Find() ([]*model.CasbinRule, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.CasbinRule, err error)
+	FindInBatches(result *[]*model.CasbinRule, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.CasbinRule) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ICasbinRuleDo
+	Assign(attrs ...field.AssignExpr) ICasbinRuleDo
+	Joins(fields ...field.RelationField) ICasbinRuleDo
+	Preload(fields ...field.RelationField) ICasbinRuleDo
+	FirstOrInit() (*model.CasbinRule, error)
+	FirstOrCreate() (*model.CasbinRule, error)
+	FindByPage(offset int, limit int) (result []*model.CasbinRule, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ICasbinRuleDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (c casbinRuleDo) Debug() ICasbinRuleDo {
 	return c.withDO(c.DO.Debug())
 }
 
-func (c casbinRuleDo) WithContext(ctx context.Context) *casbinRuleDo {
+func (c casbinRuleDo) WithContext(ctx context.Context) ICasbinRuleDo {
 	return c.withDO(c.DO.WithContext(ctx))
 }
 
-func (c casbinRuleDo) ReadDB() *casbinRuleDo {
+func (c casbinRuleDo) ReadDB() ICasbinRuleDo {
 	return c.Clauses(dbresolver.Read)
 }
 
-func (c casbinRuleDo) WriteDB() *casbinRuleDo {
+func (c casbinRuleDo) WriteDB() ICasbinRuleDo {
 	return c.Clauses(dbresolver.Write)
 }
 
-func (c casbinRuleDo) Session(config *gorm.Session) *casbinRuleDo {
+func (c casbinRuleDo) Session(config *gorm.Session) ICasbinRuleDo {
 	return c.withDO(c.DO.Session(config))
 }
 
-func (c casbinRuleDo) Clauses(conds ...clause.Expression) *casbinRuleDo {
+func (c casbinRuleDo) Clauses(conds ...clause.Expression) ICasbinRuleDo {
 	return c.withDO(c.DO.Clauses(conds...))
 }
 
-func (c casbinRuleDo) Returning(value interface{}, columns ...string) *casbinRuleDo {
+func (c casbinRuleDo) Returning(value interface{}, columns ...string) ICasbinRuleDo {
 	return c.withDO(c.DO.Returning(value, columns...))
 }
 
-func (c casbinRuleDo) Not(conds ...gen.Condition) *casbinRuleDo {
+func (c casbinRuleDo) Not(conds ...gen.Condition) ICasbinRuleDo {
 	return c.withDO(c.DO.Not(conds...))
 }
 
-func (c casbinRuleDo) Or(conds ...gen.Condition) *casbinRuleDo {
+func (c casbinRuleDo) Or(conds ...gen.Condition) ICasbinRuleDo {
 	return c.withDO(c.DO.Or(conds...))
 }
 
-func (c casbinRuleDo) Select(conds ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Select(conds ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Select(conds...))
 }
 
-func (c casbinRuleDo) Where(conds ...gen.Condition) *casbinRuleDo {
+func (c casbinRuleDo) Where(conds ...gen.Condition) ICasbinRuleDo {
 	return c.withDO(c.DO.Where(conds...))
 }
 
-func (c casbinRuleDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *casbinRuleDo {
+func (c casbinRuleDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ICasbinRuleDo {
 	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (c casbinRuleDo) Order(conds ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Order(conds ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Order(conds...))
 }
 
-func (c casbinRuleDo) Distinct(cols ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Distinct(cols ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Distinct(cols...))
 }
 
-func (c casbinRuleDo) Omit(cols ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Omit(cols ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Omit(cols...))
 }
 
-func (c casbinRuleDo) Join(table schema.Tabler, on ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Join(table schema.Tabler, on ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Join(table, on...))
 }
 
-func (c casbinRuleDo) LeftJoin(table schema.Tabler, on ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) LeftJoin(table schema.Tabler, on ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.LeftJoin(table, on...))
 }
 
-func (c casbinRuleDo) RightJoin(table schema.Tabler, on ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) RightJoin(table schema.Tabler, on ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.RightJoin(table, on...))
 }
 
-func (c casbinRuleDo) Group(cols ...field.Expr) *casbinRuleDo {
+func (c casbinRuleDo) Group(cols ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Group(cols...))
 }
 
-func (c casbinRuleDo) Having(conds ...gen.Condition) *casbinRuleDo {
+func (c casbinRuleDo) Having(conds ...gen.Condition) ICasbinRuleDo {
 	return c.withDO(c.DO.Having(conds...))
 }
 
-func (c casbinRuleDo) Limit(limit int) *casbinRuleDo {
+func (c casbinRuleDo) Limit(limit int) ICasbinRuleDo {
 	return c.withDO(c.DO.Limit(limit))
 }
 
-func (c casbinRuleDo) Offset(offset int) *casbinRuleDo {
+func (c casbinRuleDo) Offset(offset int) ICasbinRuleDo {
 	return c.withDO(c.DO.Offset(offset))
 }
 
-func (c casbinRuleDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *casbinRuleDo {
+func (c casbinRuleDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ICasbinRuleDo {
 	return c.withDO(c.DO.Scopes(funcs...))
 }
 
-func (c casbinRuleDo) Unscoped() *casbinRuleDo {
+func (c casbinRuleDo) Unscoped() ICasbinRuleDo {
 	return c.withDO(c.DO.Unscoped())
 }
 
@@ -282,22 +335,22 @@ func (c casbinRuleDo) FindInBatches(result *[]*model.CasbinRule, batchSize int, 
 	return c.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (c casbinRuleDo) Attrs(attrs ...field.AssignExpr) *casbinRuleDo {
+func (c casbinRuleDo) Attrs(attrs ...field.AssignExpr) ICasbinRuleDo {
 	return c.withDO(c.DO.Attrs(attrs...))
 }
 
-func (c casbinRuleDo) Assign(attrs ...field.AssignExpr) *casbinRuleDo {
+func (c casbinRuleDo) Assign(attrs ...field.AssignExpr) ICasbinRuleDo {
 	return c.withDO(c.DO.Assign(attrs...))
 }
 
-func (c casbinRuleDo) Joins(fields ...field.RelationField) *casbinRuleDo {
+func (c casbinRuleDo) Joins(fields ...field.RelationField) ICasbinRuleDo {
 	for _, _f := range fields {
 		c = *c.withDO(c.DO.Joins(_f))
 	}
 	return &c
 }
 
-func (c casbinRuleDo) Preload(fields ...field.RelationField) *casbinRuleDo {
+func (c casbinRuleDo) Preload(fields ...field.RelationField) ICasbinRuleDo {
 	for _, _f := range fields {
 		c = *c.withDO(c.DO.Preload(_f))
 	}

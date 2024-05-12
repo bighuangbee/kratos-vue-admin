@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newLogOper(db *gorm.DB, opts ...gen.DOOption) logOper {
@@ -49,7 +50,7 @@ func newLogOper(db *gorm.DB, opts ...gen.DOOption) logOper {
 }
 
 type logOper struct {
-	logOperDo logOperDo
+	logOperDo
 
 	ALL          field.Asterisk
 	ID           field.Int64  // 主键id
@@ -106,12 +107,6 @@ func (l *logOper) updateTableName(table string) *logOper {
 	return l
 }
 
-func (l *logOper) WithContext(ctx context.Context) *logOperDo { return l.logOperDo.WithContext(ctx) }
-
-func (l logOper) TableName() string { return l.logOperDo.TableName() }
-
-func (l logOper) Alias() string { return l.logOperDo.Alias() }
-
 func (l *logOper) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := l.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -153,99 +148,160 @@ func (l logOper) replaceDB(db *gorm.DB) logOper {
 
 type logOperDo struct{ gen.DO }
 
-func (l logOperDo) Debug() *logOperDo {
+type ILogOperDo interface {
+	gen.SubQuery
+	Debug() ILogOperDo
+	WithContext(ctx context.Context) ILogOperDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ILogOperDo
+	WriteDB() ILogOperDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ILogOperDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ILogOperDo
+	Not(conds ...gen.Condition) ILogOperDo
+	Or(conds ...gen.Condition) ILogOperDo
+	Select(conds ...field.Expr) ILogOperDo
+	Where(conds ...gen.Condition) ILogOperDo
+	Order(conds ...field.Expr) ILogOperDo
+	Distinct(cols ...field.Expr) ILogOperDo
+	Omit(cols ...field.Expr) ILogOperDo
+	Join(table schema.Tabler, on ...field.Expr) ILogOperDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ILogOperDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ILogOperDo
+	Group(cols ...field.Expr) ILogOperDo
+	Having(conds ...gen.Condition) ILogOperDo
+	Limit(limit int) ILogOperDo
+	Offset(offset int) ILogOperDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ILogOperDo
+	Unscoped() ILogOperDo
+	Create(values ...*model.LogOper) error
+	CreateInBatches(values []*model.LogOper, batchSize int) error
+	Save(values ...*model.LogOper) error
+	First() (*model.LogOper, error)
+	Take() (*model.LogOper, error)
+	Last() (*model.LogOper, error)
+	Find() ([]*model.LogOper, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.LogOper, err error)
+	FindInBatches(result *[]*model.LogOper, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.LogOper) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ILogOperDo
+	Assign(attrs ...field.AssignExpr) ILogOperDo
+	Joins(fields ...field.RelationField) ILogOperDo
+	Preload(fields ...field.RelationField) ILogOperDo
+	FirstOrInit() (*model.LogOper, error)
+	FirstOrCreate() (*model.LogOper, error)
+	FindByPage(offset int, limit int) (result []*model.LogOper, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ILogOperDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (l logOperDo) Debug() ILogOperDo {
 	return l.withDO(l.DO.Debug())
 }
 
-func (l logOperDo) WithContext(ctx context.Context) *logOperDo {
+func (l logOperDo) WithContext(ctx context.Context) ILogOperDo {
 	return l.withDO(l.DO.WithContext(ctx))
 }
 
-func (l logOperDo) ReadDB() *logOperDo {
+func (l logOperDo) ReadDB() ILogOperDo {
 	return l.Clauses(dbresolver.Read)
 }
 
-func (l logOperDo) WriteDB() *logOperDo {
+func (l logOperDo) WriteDB() ILogOperDo {
 	return l.Clauses(dbresolver.Write)
 }
 
-func (l logOperDo) Session(config *gorm.Session) *logOperDo {
+func (l logOperDo) Session(config *gorm.Session) ILogOperDo {
 	return l.withDO(l.DO.Session(config))
 }
 
-func (l logOperDo) Clauses(conds ...clause.Expression) *logOperDo {
+func (l logOperDo) Clauses(conds ...clause.Expression) ILogOperDo {
 	return l.withDO(l.DO.Clauses(conds...))
 }
 
-func (l logOperDo) Returning(value interface{}, columns ...string) *logOperDo {
+func (l logOperDo) Returning(value interface{}, columns ...string) ILogOperDo {
 	return l.withDO(l.DO.Returning(value, columns...))
 }
 
-func (l logOperDo) Not(conds ...gen.Condition) *logOperDo {
+func (l logOperDo) Not(conds ...gen.Condition) ILogOperDo {
 	return l.withDO(l.DO.Not(conds...))
 }
 
-func (l logOperDo) Or(conds ...gen.Condition) *logOperDo {
+func (l logOperDo) Or(conds ...gen.Condition) ILogOperDo {
 	return l.withDO(l.DO.Or(conds...))
 }
 
-func (l logOperDo) Select(conds ...field.Expr) *logOperDo {
+func (l logOperDo) Select(conds ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Select(conds...))
 }
 
-func (l logOperDo) Where(conds ...gen.Condition) *logOperDo {
+func (l logOperDo) Where(conds ...gen.Condition) ILogOperDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logOperDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *logOperDo {
+func (l logOperDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ILogOperDo {
 	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (l logOperDo) Order(conds ...field.Expr) *logOperDo {
+func (l logOperDo) Order(conds ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Order(conds...))
 }
 
-func (l logOperDo) Distinct(cols ...field.Expr) *logOperDo {
+func (l logOperDo) Distinct(cols ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Distinct(cols...))
 }
 
-func (l logOperDo) Omit(cols ...field.Expr) *logOperDo {
+func (l logOperDo) Omit(cols ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Omit(cols...))
 }
 
-func (l logOperDo) Join(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOperDo) Join(table schema.Tabler, on ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Join(table, on...))
 }
 
-func (l logOperDo) LeftJoin(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOperDo) LeftJoin(table schema.Tabler, on ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.LeftJoin(table, on...))
 }
 
-func (l logOperDo) RightJoin(table schema.Tabler, on ...field.Expr) *logOperDo {
+func (l logOperDo) RightJoin(table schema.Tabler, on ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.RightJoin(table, on...))
 }
 
-func (l logOperDo) Group(cols ...field.Expr) *logOperDo {
+func (l logOperDo) Group(cols ...field.Expr) ILogOperDo {
 	return l.withDO(l.DO.Group(cols...))
 }
 
-func (l logOperDo) Having(conds ...gen.Condition) *logOperDo {
+func (l logOperDo) Having(conds ...gen.Condition) ILogOperDo {
 	return l.withDO(l.DO.Having(conds...))
 }
 
-func (l logOperDo) Limit(limit int) *logOperDo {
+func (l logOperDo) Limit(limit int) ILogOperDo {
 	return l.withDO(l.DO.Limit(limit))
 }
 
-func (l logOperDo) Offset(offset int) *logOperDo {
+func (l logOperDo) Offset(offset int) ILogOperDo {
 	return l.withDO(l.DO.Offset(offset))
 }
 
-func (l logOperDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *logOperDo {
+func (l logOperDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ILogOperDo {
 	return l.withDO(l.DO.Scopes(funcs...))
 }
 
-func (l logOperDo) Unscoped() *logOperDo {
+func (l logOperDo) Unscoped() ILogOperDo {
 	return l.withDO(l.DO.Unscoped())
 }
 
@@ -311,22 +367,22 @@ func (l logOperDo) FindInBatches(result *[]*model.LogOper, batchSize int, fc fun
 	return l.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (l logOperDo) Attrs(attrs ...field.AssignExpr) *logOperDo {
+func (l logOperDo) Attrs(attrs ...field.AssignExpr) ILogOperDo {
 	return l.withDO(l.DO.Attrs(attrs...))
 }
 
-func (l logOperDo) Assign(attrs ...field.AssignExpr) *logOperDo {
+func (l logOperDo) Assign(attrs ...field.AssignExpr) ILogOperDo {
 	return l.withDO(l.DO.Assign(attrs...))
 }
 
-func (l logOperDo) Joins(fields ...field.RelationField) *logOperDo {
+func (l logOperDo) Joins(fields ...field.RelationField) ILogOperDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Joins(_f))
 	}
 	return &l
 }
 
-func (l logOperDo) Preload(fields ...field.RelationField) *logOperDo {
+func (l logOperDo) Preload(fields ...field.RelationField) ILogOperDo {
 	for _, _f := range fields {
 		l = *l.withDO(l.DO.Preload(_f))
 	}

@@ -36,11 +36,24 @@ func (a *sysApiRepo) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
-func (a *sysApiRepo) ListPage(ctx context.Context, page, size int32) ([]*model.SysAPI, error) {
+func (a *sysApiRepo) ListPage(ctx context.Context, page, size int32, path string, description, group string, method string) ([]*model.SysAPI, error) {
 	q := a.data.Query(ctx).SysAPI
 	db := q.WithContext(ctx)
 
 	limit, offset := convertPageSize(page, size)
+
+	if path != "" {
+		db = db.Where(q.Path.Like("%" + path + "%"))
+	}
+	if description != "" {
+		db = db.Where(q.Description.Like("%" + description + "%"))
+	}
+	if group != "" {
+		db = db.Where(q.APIGroup.Like("%" + group + "%"))
+	}
+	if method != "" {
+		db = db.Where(q.Method.Like("%" + method + "%"))
+	}
 	return db.Limit(limit).Offset(offset).Find()
 }
 

@@ -14,11 +14,11 @@ const TableNameSysPost = "sys_posts"
 
 // SysPost mapped from table <sys_posts>
 type SysPost struct {
-	ID        int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	ID        int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
 	PostName  string         `gorm:"column:post_name;type:varchar(128);not null;comment:岗位名称" json:"post_name"`
 	PostCode  string         `gorm:"column:post_code;type:varchar(128);not null;comment:岗位代码" json:"post_code"`
-	Sort      int32          `gorm:"column:sort;type:int(4);not null;comment:岗位排序" json:"sort"`
-	Status    int32          `gorm:"column:status;type:tinyint(2);not null;default:1;comment:状态 1=正常 2=冻结" json:"status"`
+	Sort      int32          `gorm:"column:sort;type:int;not null;comment:岗位排序" json:"sort"`
+	Status    int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:状态 1=正常 2=冻结" json:"status"`
 	Remark    string         `gorm:"column:remark;type:varchar(255);not null;comment:描述" json:"remark"`
 	CreateBy  string         `gorm:"column:create_by;type:varchar(64);not null;comment:创建人" json:"create_by"`
 	UpdateBy  string         `gorm:"column:update_by;type:varchar(64);not null;comment:修改人" json:"update_by"`

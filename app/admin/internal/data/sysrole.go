@@ -64,6 +64,12 @@ func (r *sysRoleRepo) ListPage(ctx context.Context, name, key string, status int
 	return db.Limit(limit).Offset(offset).Find()
 }
 
+func (r *sysRoleRepo) Roles(ctx context.Context) ([]*model.SysRole, error) {
+	q := r.data.Query(ctx).SysRole
+	db := q.WithContext(ctx)
+	return db.Where(q.Status.Eq(int32(1))).Find()
+}
+
 func (r *sysRoleRepo) Count(ctx context.Context, name, key string, status int32) (int32, error) {
 	q := r.data.Query(ctx).SysRole
 	db := q.WithContext(ctx)

@@ -14,7 +14,7 @@ const TableNameSysAPI = "sys_apis"
 
 // SysAPI mapped from table <sys_apis>
 type SysAPI struct {
-	ID          int64          `gorm:"column:id;type:bigint(20);primaryKey;autoIncrement:true;comment:主键id" json:"id"`
+	ID          int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
 	Path        string         `gorm:"column:path;type:varchar(191);not null;comment:api路径" json:"path"`
 	Description string         `gorm:"column:description;type:varchar(191);not null;comment:api中文描述" json:"description"`
 	APIGroup    string         `gorm:"column:api_group;type:varchar(191);not null;comment:api组" json:"api_group"`

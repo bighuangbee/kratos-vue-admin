@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-
 	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
@@ -53,6 +52,27 @@ func (r *RolesService) ListRoles(ctx context.Context, req *pb.ListRolesRequest) 
 		PageNum:  req.PageNum,
 		PageSize: req.PageSize,
 		Data:     data,
+	}, nil
+}
+
+func (r *RolesService) Roles(ctx context.Context, req *pb.ListRolesRequest) (*pb.ListRolesReply, error) {
+	roleList, err := r.rc.Roles(ctx)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]*pb.RoleData, len(roleList))
+	for i, d := range roleList {
+		data[i] = &pb.RoleData{
+			RoleId:    d.ID,
+			RoleName:  d.RoleName,
+			Status:    d.Status,
+			RoleKey:   d.RoleKey,
+			RoleSort:  d.RoleSort,
+			DataScope: int64(d.DataScope),
+		}
+	}
+	return &pb.ListRolesReply{
+		Data: data,
 	}, nil
 }
 

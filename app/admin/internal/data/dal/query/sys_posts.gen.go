@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newSysPost(db *gorm.DB, opts ...gen.DOOption) sysPost {
@@ -44,7 +45,7 @@ func newSysPost(db *gorm.DB, opts ...gen.DOOption) sysPost {
 }
 
 type sysPost struct {
-	sysPostDo sysPostDo
+	sysPostDo
 
 	ALL       field.Asterisk
 	ID        field.Int64  // 主键id
@@ -91,12 +92,6 @@ func (s *sysPost) updateTableName(table string) *sysPost {
 	return s
 }
 
-func (s *sysPost) WithContext(ctx context.Context) *sysPostDo { return s.sysPostDo.WithContext(ctx) }
-
-func (s sysPost) TableName() string { return s.sysPostDo.TableName() }
-
-func (s sysPost) Alias() string { return s.sysPostDo.Alias() }
-
 func (s *sysPost) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := s.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -133,99 +128,160 @@ func (s sysPost) replaceDB(db *gorm.DB) sysPost {
 
 type sysPostDo struct{ gen.DO }
 
-func (s sysPostDo) Debug() *sysPostDo {
+type ISysPostDo interface {
+	gen.SubQuery
+	Debug() ISysPostDo
+	WithContext(ctx context.Context) ISysPostDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() ISysPostDo
+	WriteDB() ISysPostDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) ISysPostDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) ISysPostDo
+	Not(conds ...gen.Condition) ISysPostDo
+	Or(conds ...gen.Condition) ISysPostDo
+	Select(conds ...field.Expr) ISysPostDo
+	Where(conds ...gen.Condition) ISysPostDo
+	Order(conds ...field.Expr) ISysPostDo
+	Distinct(cols ...field.Expr) ISysPostDo
+	Omit(cols ...field.Expr) ISysPostDo
+	Join(table schema.Tabler, on ...field.Expr) ISysPostDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) ISysPostDo
+	RightJoin(table schema.Tabler, on ...field.Expr) ISysPostDo
+	Group(cols ...field.Expr) ISysPostDo
+	Having(conds ...gen.Condition) ISysPostDo
+	Limit(limit int) ISysPostDo
+	Offset(offset int) ISysPostDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) ISysPostDo
+	Unscoped() ISysPostDo
+	Create(values ...*model.SysPost) error
+	CreateInBatches(values []*model.SysPost, batchSize int) error
+	Save(values ...*model.SysPost) error
+	First() (*model.SysPost, error)
+	Take() (*model.SysPost, error)
+	Last() (*model.SysPost, error)
+	Find() ([]*model.SysPost, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.SysPost, err error)
+	FindInBatches(result *[]*model.SysPost, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.SysPost) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) ISysPostDo
+	Assign(attrs ...field.AssignExpr) ISysPostDo
+	Joins(fields ...field.RelationField) ISysPostDo
+	Preload(fields ...field.RelationField) ISysPostDo
+	FirstOrInit() (*model.SysPost, error)
+	FirstOrCreate() (*model.SysPost, error)
+	FindByPage(offset int, limit int) (result []*model.SysPost, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) ISysPostDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (s sysPostDo) Debug() ISysPostDo {
 	return s.withDO(s.DO.Debug())
 }
 
-func (s sysPostDo) WithContext(ctx context.Context) *sysPostDo {
+func (s sysPostDo) WithContext(ctx context.Context) ISysPostDo {
 	return s.withDO(s.DO.WithContext(ctx))
 }
 
-func (s sysPostDo) ReadDB() *sysPostDo {
+func (s sysPostDo) ReadDB() ISysPostDo {
 	return s.Clauses(dbresolver.Read)
 }
 
-func (s sysPostDo) WriteDB() *sysPostDo {
+func (s sysPostDo) WriteDB() ISysPostDo {
 	return s.Clauses(dbresolver.Write)
 }
 
-func (s sysPostDo) Session(config *gorm.Session) *sysPostDo {
+func (s sysPostDo) Session(config *gorm.Session) ISysPostDo {
 	return s.withDO(s.DO.Session(config))
 }
 
-func (s sysPostDo) Clauses(conds ...clause.Expression) *sysPostDo {
+func (s sysPostDo) Clauses(conds ...clause.Expression) ISysPostDo {
 	return s.withDO(s.DO.Clauses(conds...))
 }
 
-func (s sysPostDo) Returning(value interface{}, columns ...string) *sysPostDo {
+func (s sysPostDo) Returning(value interface{}, columns ...string) ISysPostDo {
 	return s.withDO(s.DO.Returning(value, columns...))
 }
 
-func (s sysPostDo) Not(conds ...gen.Condition) *sysPostDo {
+func (s sysPostDo) Not(conds ...gen.Condition) ISysPostDo {
 	return s.withDO(s.DO.Not(conds...))
 }
 
-func (s sysPostDo) Or(conds ...gen.Condition) *sysPostDo {
+func (s sysPostDo) Or(conds ...gen.Condition) ISysPostDo {
 	return s.withDO(s.DO.Or(conds...))
 }
 
-func (s sysPostDo) Select(conds ...field.Expr) *sysPostDo {
+func (s sysPostDo) Select(conds ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Select(conds...))
 }
 
-func (s sysPostDo) Where(conds ...gen.Condition) *sysPostDo {
+func (s sysPostDo) Where(conds ...gen.Condition) ISysPostDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysPostDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *sysPostDo {
+func (s sysPostDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysPostDo {
 	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (s sysPostDo) Order(conds ...field.Expr) *sysPostDo {
+func (s sysPostDo) Order(conds ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Order(conds...))
 }
 
-func (s sysPostDo) Distinct(cols ...field.Expr) *sysPostDo {
+func (s sysPostDo) Distinct(cols ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Distinct(cols...))
 }
 
-func (s sysPostDo) Omit(cols ...field.Expr) *sysPostDo {
+func (s sysPostDo) Omit(cols ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Omit(cols...))
 }
 
-func (s sysPostDo) Join(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostDo) Join(table schema.Tabler, on ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Join(table, on...))
 }
 
-func (s sysPostDo) LeftJoin(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostDo) LeftJoin(table schema.Tabler, on ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.LeftJoin(table, on...))
 }
 
-func (s sysPostDo) RightJoin(table schema.Tabler, on ...field.Expr) *sysPostDo {
+func (s sysPostDo) RightJoin(table schema.Tabler, on ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.RightJoin(table, on...))
 }
 
-func (s sysPostDo) Group(cols ...field.Expr) *sysPostDo {
+func (s sysPostDo) Group(cols ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Group(cols...))
 }
 
-func (s sysPostDo) Having(conds ...gen.Condition) *sysPostDo {
+func (s sysPostDo) Having(conds ...gen.Condition) ISysPostDo {
 	return s.withDO(s.DO.Having(conds...))
 }
 
-func (s sysPostDo) Limit(limit int) *sysPostDo {
+func (s sysPostDo) Limit(limit int) ISysPostDo {
 	return s.withDO(s.DO.Limit(limit))
 }
 
-func (s sysPostDo) Offset(offset int) *sysPostDo {
+func (s sysPostDo) Offset(offset int) ISysPostDo {
 	return s.withDO(s.DO.Offset(offset))
 }
 
-func (s sysPostDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *sysPostDo {
+func (s sysPostDo) Scopes(funcs ...func(gen.Dao) gen.Dao) ISysPostDo {
 	return s.withDO(s.DO.Scopes(funcs...))
 }
 
-func (s sysPostDo) Unscoped() *sysPostDo {
+func (s sysPostDo) Unscoped() ISysPostDo {
 	return s.withDO(s.DO.Unscoped())
 }
 
@@ -291,22 +347,22 @@ func (s sysPostDo) FindInBatches(result *[]*model.SysPost, batchSize int, fc fun
 	return s.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (s sysPostDo) Attrs(attrs ...field.AssignExpr) *sysPostDo {
+func (s sysPostDo) Attrs(attrs ...field.AssignExpr) ISysPostDo {
 	return s.withDO(s.DO.Attrs(attrs...))
 }
 
-func (s sysPostDo) Assign(attrs ...field.AssignExpr) *sysPostDo {
+func (s sysPostDo) Assign(attrs ...field.AssignExpr) ISysPostDo {
 	return s.withDO(s.DO.Assign(attrs...))
 }
 
-func (s sysPostDo) Joins(fields ...field.RelationField) *sysPostDo {
+func (s sysPostDo) Joins(fields ...field.RelationField) ISysPostDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Joins(_f))
 	}
 	return &s
 }
 
-func (s sysPostDo) Preload(fields ...field.RelationField) *sysPostDo {
+func (s sysPostDo) Preload(fields ...field.RelationField) ISysPostDo {
 	for _, _f := range fields {
 		s = *s.withDO(s.DO.Preload(_f))
 	}

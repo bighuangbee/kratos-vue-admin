@@ -291,6 +291,14 @@ func (m *ListApiRequest) validate(all bool) error {
 
 	// no validation rules for PageSize
 
+	// no validation rules for Path
+
+	// no validation rules for ApiGroup
+
+	// no validation rules for Method
+
+	// no validation rules for Description
+
 	if len(errors) > 0 {
 		return ListApiRequestMultiError(errors)
 	}

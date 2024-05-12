@@ -6,7 +6,6 @@ package query
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -16,6 +15,8 @@ import (
 	"gorm.io/gen/field"
 
 	"gorm.io/plugin/dbresolver"
+
+	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 func newJwtBlacklist(db *gorm.DB, opts ...gen.DOOption) jwtBlacklist {
@@ -38,7 +39,7 @@ func newJwtBlacklist(db *gorm.DB, opts ...gen.DOOption) jwtBlacklist {
 }
 
 type jwtBlacklist struct {
-	jwtBlacklistDo jwtBlacklistDo
+	jwtBlacklistDo
 
 	ALL       field.Asterisk
 	ID        field.Int64
@@ -73,14 +74,6 @@ func (j *jwtBlacklist) updateTableName(table string) *jwtBlacklist {
 	return j
 }
 
-func (j *jwtBlacklist) WithContext(ctx context.Context) *jwtBlacklistDo {
-	return j.jwtBlacklistDo.WithContext(ctx)
-}
-
-func (j jwtBlacklist) TableName() string { return j.jwtBlacklistDo.TableName() }
-
-func (j jwtBlacklist) Alias() string { return j.jwtBlacklistDo.Alias() }
-
 func (j *jwtBlacklist) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 	_f, ok := j.fieldMap[fieldName]
 	if !ok || _f == nil {
@@ -111,99 +104,160 @@ func (j jwtBlacklist) replaceDB(db *gorm.DB) jwtBlacklist {
 
 type jwtBlacklistDo struct{ gen.DO }
 
-func (j jwtBlacklistDo) Debug() *jwtBlacklistDo {
+type IJwtBlacklistDo interface {
+	gen.SubQuery
+	Debug() IJwtBlacklistDo
+	WithContext(ctx context.Context) IJwtBlacklistDo
+	WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+	ReplaceDB(db *gorm.DB)
+	ReadDB() IJwtBlacklistDo
+	WriteDB() IJwtBlacklistDo
+	As(alias string) gen.Dao
+	Session(config *gorm.Session) IJwtBlacklistDo
+	Columns(cols ...field.Expr) gen.Columns
+	Clauses(conds ...clause.Expression) IJwtBlacklistDo
+	Not(conds ...gen.Condition) IJwtBlacklistDo
+	Or(conds ...gen.Condition) IJwtBlacklistDo
+	Select(conds ...field.Expr) IJwtBlacklistDo
+	Where(conds ...gen.Condition) IJwtBlacklistDo
+	Order(conds ...field.Expr) IJwtBlacklistDo
+	Distinct(cols ...field.Expr) IJwtBlacklistDo
+	Omit(cols ...field.Expr) IJwtBlacklistDo
+	Join(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo
+	LeftJoin(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo
+	RightJoin(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo
+	Group(cols ...field.Expr) IJwtBlacklistDo
+	Having(conds ...gen.Condition) IJwtBlacklistDo
+	Limit(limit int) IJwtBlacklistDo
+	Offset(offset int) IJwtBlacklistDo
+	Count() (count int64, err error)
+	Scopes(funcs ...func(gen.Dao) gen.Dao) IJwtBlacklistDo
+	Unscoped() IJwtBlacklistDo
+	Create(values ...*model.JwtBlacklist) error
+	CreateInBatches(values []*model.JwtBlacklist, batchSize int) error
+	Save(values ...*model.JwtBlacklist) error
+	First() (*model.JwtBlacklist, error)
+	Take() (*model.JwtBlacklist, error)
+	Last() (*model.JwtBlacklist, error)
+	Find() ([]*model.JwtBlacklist, error)
+	FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.JwtBlacklist, err error)
+	FindInBatches(result *[]*model.JwtBlacklist, batchSize int, fc func(tx gen.Dao, batch int) error) error
+	Pluck(column field.Expr, dest interface{}) error
+	Delete(...*model.JwtBlacklist) (info gen.ResultInfo, err error)
+	Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	Updates(value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+	UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+	UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+	UpdateFrom(q gen.SubQuery) gen.Dao
+	Attrs(attrs ...field.AssignExpr) IJwtBlacklistDo
+	Assign(attrs ...field.AssignExpr) IJwtBlacklistDo
+	Joins(fields ...field.RelationField) IJwtBlacklistDo
+	Preload(fields ...field.RelationField) IJwtBlacklistDo
+	FirstOrInit() (*model.JwtBlacklist, error)
+	FirstOrCreate() (*model.JwtBlacklist, error)
+	FindByPage(offset int, limit int) (result []*model.JwtBlacklist, count int64, err error)
+	ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+	Scan(result interface{}) (err error)
+	Returning(value interface{}, columns ...string) IJwtBlacklistDo
+	UnderlyingDB() *gorm.DB
+	schema.Tabler
+}
+
+func (j jwtBlacklistDo) Debug() IJwtBlacklistDo {
 	return j.withDO(j.DO.Debug())
 }
 
-func (j jwtBlacklistDo) WithContext(ctx context.Context) *jwtBlacklistDo {
+func (j jwtBlacklistDo) WithContext(ctx context.Context) IJwtBlacklistDo {
 	return j.withDO(j.DO.WithContext(ctx))
 }
 
-func (j jwtBlacklistDo) ReadDB() *jwtBlacklistDo {
+func (j jwtBlacklistDo) ReadDB() IJwtBlacklistDo {
 	return j.Clauses(dbresolver.Read)
 }
 
-func (j jwtBlacklistDo) WriteDB() *jwtBlacklistDo {
+func (j jwtBlacklistDo) WriteDB() IJwtBlacklistDo {
 	return j.Clauses(dbresolver.Write)
 }
 
-func (j jwtBlacklistDo) Session(config *gorm.Session) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Session(config *gorm.Session) IJwtBlacklistDo {
 	return j.withDO(j.DO.Session(config))
 }
 
-func (j jwtBlacklistDo) Clauses(conds ...clause.Expression) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Clauses(conds ...clause.Expression) IJwtBlacklistDo {
 	return j.withDO(j.DO.Clauses(conds...))
 }
 
-func (j jwtBlacklistDo) Returning(value interface{}, columns ...string) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Returning(value interface{}, columns ...string) IJwtBlacklistDo {
 	return j.withDO(j.DO.Returning(value, columns...))
 }
 
-func (j jwtBlacklistDo) Not(conds ...gen.Condition) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Not(conds ...gen.Condition) IJwtBlacklistDo {
 	return j.withDO(j.DO.Not(conds...))
 }
 
-func (j jwtBlacklistDo) Or(conds ...gen.Condition) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Or(conds ...gen.Condition) IJwtBlacklistDo {
 	return j.withDO(j.DO.Or(conds...))
 }
 
-func (j jwtBlacklistDo) Select(conds ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Select(conds ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Select(conds...))
 }
 
-func (j jwtBlacklistDo) Where(conds ...gen.Condition) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Where(conds ...gen.Condition) IJwtBlacklistDo {
 	return j.withDO(j.DO.Where(conds...))
 }
 
-func (j jwtBlacklistDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) IJwtBlacklistDo {
 	return j.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
 }
 
-func (j jwtBlacklistDo) Order(conds ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Order(conds ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Order(conds...))
 }
 
-func (j jwtBlacklistDo) Distinct(cols ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Distinct(cols ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Distinct(cols...))
 }
 
-func (j jwtBlacklistDo) Omit(cols ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Omit(cols ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Omit(cols...))
 }
 
-func (j jwtBlacklistDo) Join(table schema.Tabler, on ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Join(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Join(table, on...))
 }
 
-func (j jwtBlacklistDo) LeftJoin(table schema.Tabler, on ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) LeftJoin(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.LeftJoin(table, on...))
 }
 
-func (j jwtBlacklistDo) RightJoin(table schema.Tabler, on ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) RightJoin(table schema.Tabler, on ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.RightJoin(table, on...))
 }
 
-func (j jwtBlacklistDo) Group(cols ...field.Expr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Group(cols ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Group(cols...))
 }
 
-func (j jwtBlacklistDo) Having(conds ...gen.Condition) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Having(conds ...gen.Condition) IJwtBlacklistDo {
 	return j.withDO(j.DO.Having(conds...))
 }
 
-func (j jwtBlacklistDo) Limit(limit int) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Limit(limit int) IJwtBlacklistDo {
 	return j.withDO(j.DO.Limit(limit))
 }
 
-func (j jwtBlacklistDo) Offset(offset int) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Offset(offset int) IJwtBlacklistDo {
 	return j.withDO(j.DO.Offset(offset))
 }
 
-func (j jwtBlacklistDo) Scopes(funcs ...func(gen.Dao) gen.Dao) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Scopes(funcs ...func(gen.Dao) gen.Dao) IJwtBlacklistDo {
 	return j.withDO(j.DO.Scopes(funcs...))
 }
 
-func (j jwtBlacklistDo) Unscoped() *jwtBlacklistDo {
+func (j jwtBlacklistDo) Unscoped() IJwtBlacklistDo {
 	return j.withDO(j.DO.Unscoped())
 }
 
@@ -269,22 +323,22 @@ func (j jwtBlacklistDo) FindInBatches(result *[]*model.JwtBlacklist, batchSize i
 	return j.DO.FindInBatches(result, batchSize, fc)
 }
 
-func (j jwtBlacklistDo) Attrs(attrs ...field.AssignExpr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Attrs(attrs ...field.AssignExpr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Attrs(attrs...))
 }
 
-func (j jwtBlacklistDo) Assign(attrs ...field.AssignExpr) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Assign(attrs ...field.AssignExpr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Assign(attrs...))
 }
 
-func (j jwtBlacklistDo) Joins(fields ...field.RelationField) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Joins(fields ...field.RelationField) IJwtBlacklistDo {
 	for _, _f := range fields {
 		j = *j.withDO(j.DO.Joins(_f))
 	}
 	return &j
 }
 
-func (j jwtBlacklistDo) Preload(fields ...field.RelationField) *jwtBlacklistDo {
+func (j jwtBlacklistDo) Preload(fields ...field.RelationField) IJwtBlacklistDo {
 	for _, _f := range fields {
 		j = *j.withDO(j.DO.Preload(_f))
 	}
