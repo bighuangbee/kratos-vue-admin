@@ -103,7 +103,7 @@ test:
 
 .PHONY: run
 run:
-	cd cmd/server/ && go run .
+	cd app/admin/cmd/server/ && go run .
 
 .PHONY: docker
 docker:

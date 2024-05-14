@@ -72,7 +72,8 @@ func (c *casbinRuleRepo) UpdateCasbinApi(ctx context.Context, oldPath string, ne
 }
 
 func (c *casbinRuleRepo) GetPolicyPathByRoleId(roleKey string) [][]string {
-	return c.syncedEnforcer.GetFilteredPolicy(0, roleKey)
+	data, _ := c.syncedEnforcer.GetFilteredPolicy(0, roleKey)
+	return data
 }
 
 func (c *casbinRuleRepo) ClearCasbin(v int, p ...string) error {

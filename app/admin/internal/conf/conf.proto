@@ -11,6 +11,7 @@ message Bootstrap {
   Auth auth = 3;
   Casbin casbin = 4;
   Oss oss = 5;
+  Logger logger = 6;
 }
 
 enum Env
@@ -96,4 +97,8 @@ enum GormLogLevel {
     info = 1;
   silent = 2;
     error =3;
+}
+
+message Logger {
+  string path = 1;
 }

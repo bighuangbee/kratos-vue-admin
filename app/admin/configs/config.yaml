@@ -42,3 +42,6 @@ oss:
     bucketName: ""
     bucketURL: ""
     imgDomain: ""
+
+logger:
+  path: ./logs

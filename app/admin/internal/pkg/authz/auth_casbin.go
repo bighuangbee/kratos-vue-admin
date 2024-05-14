@@ -8,7 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	jwtV4 "github.com/golang-jwt/jwt/v4"
+	gojwt "github.com/golang-jwt/jwt/v5"
 	"github.com/tx7do/kratos-casbin/authz"
 )
 
@@ -22,7 +22,7 @@ type TokenClaims struct {
 	RoleID   int64  `json:"role_id"`
 	RoleKey  string `json:"role_key"`
 	Nickname string `json:"nickname"`
-	jwtV4.RegisteredClaims
+	gojwt.RegisteredClaims
 }
 
 type securityUser struct {
@@ -76,6 +76,8 @@ func FromContext(ctx context.Context) (*TokenClaims, error) {
 	if !ok {
 		return nil, ErrTokenMiss
 	}
+
+	claims.GetExpirationTime()
 	return claims.(*TokenClaims), nil
 }
 
@@ -88,14 +90,14 @@ func MustFromContext(ctx context.Context) *TokenClaims {
 }
 
 func NewToken(key string, expireAt time.Time, userID, roleID int64, roleKey, nickname string) (string, error) {
-	claims := jwtV4.NewWithClaims(jwtV4.SigningMethodHS256, &TokenClaims{
+	claims := gojwt.NewWithClaims(gojwt.SigningMethodHS256, &TokenClaims{
 		UserID:   userID,
 		RoleID:   roleID,
 		Nickname: nickname,
 		RoleKey:  roleKey,
-		RegisteredClaims: jwtV4.RegisteredClaims{
+		RegisteredClaims: gojwt.RegisteredClaims{
 			Issuer:    "admin",
-			ExpiresAt: jwtV4.NewNumericDate(expireAt),
+			ExpiresAt: gojwt.NewNumericDate(expireAt),
 		},
 	})
 	return claims.SignedString([]byte(key))

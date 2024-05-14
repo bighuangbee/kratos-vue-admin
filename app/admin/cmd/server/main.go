@@ -2,15 +2,17 @@ package main
 
 import (
 	"flag"
+	logger2 "github.com/byteflowteam/kratos-vue-admin/pkg/logger"
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/middleware/tracing"
+	"go.uber.org/zap/zapcore"
 	"os"
 
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
 
-	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	_ "go.uber.org/automaxprocs"
 )
@@ -47,15 +49,7 @@ func newApp(logger log.Logger, hs *http.Server) *kratos.App {
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace.id", tracing.TraceID(),
-		"span.id", tracing.SpanID(),
-	)
+
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -66,11 +60,29 @@ func main() {
 	if err := c.Load(); err != nil {
 		panic(err)
 	}
-
 	var bc conf.Bootstrap
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
+
+	logger := log.With(logger2.NewZapLogger(&logger2.Options{
+		Level: zapcore.DebugLevel,
+		Skip:  3,
+		Writer: logger2.NewFileWriter(&logger2.FileOption{
+			Filename: bc.Logger.Path + "/%Y-%m-%d.log",
+			MaxSize:  20,
+		}),
+	}))
+
+	logger = log.With(logger,
+		//"ts", log.DefaultTimestamp,
+		//"caller", log.DefaultCaller,
+		"service.id", id,
+		"service.name", Name,
+		//"service.version", Version,
+		"trace.id", tracing.TraceID(),
+		"span.id", tracing.SpanID(),
+	)
 
 	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, bc.Casbin, bc.Oss, logger, bc.Data.Redis)
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
 	"github.com/go-kratos/kratos/v2/middleware/selector"
-	jwtV4 "github.com/golang-jwt/jwt/v4"
+	gojwt "github.com/golang-jwt/jwt/v5"
 	"github.com/tx7do/kratos-casbin/authz/casbin"
 	"time"
 
@@ -30,9 +30,9 @@ func AuthWhiteListMatcher() selector.MatchFunc {
 func Auth(s *conf.Auth, repo biz.CasbinRuleRepo) middleware.Middleware {
 	return selector.Server(
 		jwt.Server(
-			func(token *jwtV4.Token) (interface{}, error) { return []byte(s.JwtKey), nil },
-			jwt.WithSigningMethod(jwtV4.SigningMethodHS256),
-			jwt.WithClaims(func() jwtV4.Claims { return &authz.TokenClaims{} }),
+			func(token *gojwt.Token) (interface{}, error) { return []byte(s.JwtKey), nil },
+			jwt.WithSigningMethod(gojwt.SigningMethodHS256),
+			jwt.WithClaims(func() gojwt.Claims { return &authz.TokenClaims{} }),
 		),
 		casbin.Server(
 			casbin.WithCasbinModel(repo.GetModel()),
