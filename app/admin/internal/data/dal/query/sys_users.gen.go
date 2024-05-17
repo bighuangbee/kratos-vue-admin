@@ -281,10 +281,6 @@ func (s sysUserDo) Where(conds ...gen.Condition) ISysUserDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysUserDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysUserDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysUserDo) Order(conds ...field.Expr) ISysUserDo {
 	return s.withDO(s.DO.Order(conds...))
 }

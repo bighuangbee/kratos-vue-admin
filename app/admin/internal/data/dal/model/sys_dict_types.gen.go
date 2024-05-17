@@ -15,12 +15,12 @@ const TableNameSysDictType = "sys_dict_types"
 // SysDictType mapped from table <sys_dict_types>
 type SysDictType struct {
 	DictID    int64          `gorm:"column:dict_id;type:bigint;primaryKey;autoIncrement:true" json:"dict_id"`
-	DictName  string         `gorm:"column:dict_name;type:varchar(64);comment:名称" json:"dict_name"`
-	DictType  string         `gorm:"column:dict_type;type:varchar(64);comment:类型" json:"dict_type"`
-	Status    int32          `gorm:"column:status;type:tinyint;comment:状态" json:"status"`
+	DictName  string         `gorm:"column:dict_name;type:varchar(64);comment:名称" json:"dict_name"` // 名称
+	DictType  string         `gorm:"column:dict_type;type:varchar(64);comment:类型" json:"dict_type"` // 类型
+	Status    int32          `gorm:"column:status;type:tinyint;comment:状态" json:"status"`           // 状态
 	CreateBy  string         `gorm:"column:create_by;type:varchar(191)" json:"create_by"`
 	UpdateBy  string         `gorm:"column:update_by;type:varchar(191)" json:"update_by"`
-	Remark    string         `gorm:"column:remark;type:varchar(256);comment:备注" json:"remark"`
+	Remark    string         `gorm:"column:remark;type:varchar(256);comment:备注" json:"remark"` // 备注
 	CreatedAt time.Time      `gorm:"column:created_at;type:datetime" json:"created_at"`
 	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime" json:"deleted_at"`

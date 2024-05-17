@@ -201,10 +201,6 @@ func (s sysRoleDeptDo) Where(conds ...gen.Condition) ISysRoleDeptDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysRoleDeptDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysRoleDeptDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysRoleDeptDo) Order(conds ...field.Expr) ISysRoleDeptDo {
 	return s.withDO(s.DO.Order(conds...))
 }

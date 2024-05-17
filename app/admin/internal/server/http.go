@@ -11,7 +11,6 @@ import (
 	stdhttp "net/http"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
 	"github.com/gorilla/handlers"
@@ -93,12 +92,14 @@ func NewHTTPServer(
 	dictTypeService *service.DictTypeService,
 	dictDataService *service.DictDataService,
 	roleService *service.RolesService,
+	logService *service.LogService,
 ) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
-			logging.Server(logger),
+			middleware.Server(logger, logService, apiService),
 			middleware.Auth(s, casbinRepo),
+			//middleware.SaveOpLog(logService, logger),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Language", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"}),

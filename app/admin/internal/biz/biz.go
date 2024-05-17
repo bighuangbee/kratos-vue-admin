@@ -20,6 +20,7 @@ var ProviderSet = wire.NewSet(
 	NewCasbinRuleUseCase,
 	NewSysDictDatumUseCase,
 	NewSysDictTypeUseCase,
+	NewSysLogCase,
 )
 
 type Transaction interface {

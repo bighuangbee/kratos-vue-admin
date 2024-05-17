@@ -8,10 +8,10 @@ const TableNameSysRoleMenu = "sys_role_menus"
 
 // SysRoleMenu mapped from table <sys_role_menus>
 type SysRoleMenu struct {
-	ID       int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	RoleID   int64  `gorm:"column:role_id;type:bigint;not null;comment:角色id" json:"role_id"`
-	MenuID   int64  `gorm:"column:menu_id;type:bigint;not null;comment:菜单id" json:"menu_id"`
-	RoleName string `gorm:"column:role_name;type:varchar(128);not null;comment:角色名称" json:"role_name"`
+	ID       int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"` // 主键id
+	RoleID   int64  `gorm:"column:role_id;type:bigint;not null;comment:角色id" json:"role_id"`            // 角色id
+	MenuID   int64  `gorm:"column:menu_id;type:bigint;not null;comment:菜单id" json:"menu_id"`            // 菜单id
+	RoleName string `gorm:"column:role_name;type:varchar(128);not null;comment:角色名称" json:"role_name"`  // 角色名称
 }
 
 // TableName SysRoleMenu's table name

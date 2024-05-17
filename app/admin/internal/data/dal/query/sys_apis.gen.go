@@ -221,10 +221,6 @@ func (s sysAPIDo) Where(conds ...gen.Condition) ISysAPIDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysAPIDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysAPIDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysAPIDo) Order(conds ...field.Expr) ISysAPIDo {
 	return s.withDO(s.DO.Order(conds...))
 }

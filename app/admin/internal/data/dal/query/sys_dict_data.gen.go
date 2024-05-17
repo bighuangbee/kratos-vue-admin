@@ -249,10 +249,6 @@ func (s sysDictDatumDo) Where(conds ...gen.Condition) ISysDictDatumDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDictDatumDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysDictDatumDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysDictDatumDo) Order(conds ...field.Expr) ISysDictDatumDo {
 	return s.withDO(s.DO.Order(conds...))
 }

@@ -32,6 +32,7 @@ var ProviderSet = wire.NewSet(
 	NewSysDictDataRepo,
 	NewSysDictTypeRepo,
 	NewRedisRepo,
+	NewSysLogRepo,
 )
 
 // Data .

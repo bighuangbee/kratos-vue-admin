@@ -15,27 +15,27 @@ const TableNameSysMenu = "sys_menus"
 // SysMenu mapped from table <sys_menus>
 type SysMenu struct {
 	ID         int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
-	MenuName   string         `gorm:"column:menu_name;type:varchar(128);not null;comment:菜单名称" json:"menu_name"`
-	Title      string         `gorm:"column:title;type:varchar(128);not null;comment:附加属性" json:"title"`
-	ParentID   int64          `gorm:"column:parent_id;type:bigint;not null;comment:父级菜单id" json:"parent_id"`
-	Sort       int32          `gorm:"column:sort;type:int;not null;comment:排序" json:"sort"`
-	Icon       string         `gorm:"column:icon;type:varchar(128);not null;comment:菜单图标" json:"icon"`
-	Path       string         `gorm:"column:path;type:varchar(128);not null;comment:路由地址" json:"path"`
-	Component  string         `gorm:"column:component;type:varchar(255);not null;comment:组件路径" json:"component"`
-	IsIframe   int32          `gorm:"column:is_iframe;type:tinyint;not null;default:2;comment:是否为内嵌 1=是 2=否" json:"is_iframe"`
-	Link       string         `gorm:"column:link;type:varchar(255);not null;comment:超链接" json:"link"`
-	MenuType   string         `gorm:"column:menu_type;type:varchar(1);not null;default:1;comment:菜单类型（1目录 2菜单 3按钮）" json:"menu_type"`
-	Hidden     int32          `gorm:"column:hidden;type:tinyint;not null;default:1;comment:显示状态（0显示 1隐藏）" json:"hidden"`
-	KeepAlive  int32          `gorm:"column:keep_alive;type:tinyint;not null;default:1;comment:是否缓存组件状态（1是 2否）" json:"keep_alive"`
-	IsAffix    int32          `gorm:"column:is_affix;type:tinyint;not null;default:1;comment:是否固定在 tagsView 栏上（1是 2否）" json:"is_affix"`
-	Permission string         `gorm:"column:permission;type:varchar(32);not null;comment:权限标识" json:"permission"`
-	Status     int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:菜单状态 1=正常 2=停用" json:"status"`
-	CreateBy   string         `gorm:"column:create_by;type:varchar(128);not null;comment:创建人" json:"create_by"`
-	UpdateBy   string         `gorm:"column:update_by;type:varchar(128);not null;comment:更新人" json:"update_by"`
-	Remark     string         `gorm:"column:remark;type:varchar(191);not null;comment:备注" json:"remark"`
-	CreatedAt  time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt  time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt  gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+	MenuName   string         `gorm:"column:menu_name;type:varchar(128);not null;comment:菜单名称" json:"menu_name"`                        // 菜单名称
+	Title      string         `gorm:"column:title;type:varchar(128);not null;comment:附加属性" json:"title"`                                // 附加属性
+	ParentID   int64          `gorm:"column:parent_id;type:bigint;not null;comment:父级菜单id" json:"parent_id"`                            // 父级菜单id
+	Sort       int32          `gorm:"column:sort;type:int;not null;comment:排序" json:"sort"`                                             // 排序
+	Icon       string         `gorm:"column:icon;type:varchar(128);not null;comment:菜单图标" json:"icon"`                                  // 菜单图标
+	Path       string         `gorm:"column:path;type:varchar(128);not null;comment:路由地址" json:"path"`                                  // 路由地址
+	Component  string         `gorm:"column:component;type:varchar(255);not null;comment:组件路径" json:"component"`                        // 组件路径
+	IsIframe   int32          `gorm:"column:is_iframe;type:tinyint;not null;default:2;comment:是否为内嵌 1=是 2=否" json:"is_iframe"`          // 是否为内嵌 1=是 2=否
+	Link       string         `gorm:"column:link;type:varchar(255);not null;comment:超链接" json:"link"`                                   // 超链接
+	MenuType   string         `gorm:"column:menu_type;type:varchar(1);not null;default:1;comment:菜单类型（1目录 2菜单 3按钮）" json:"menu_type"`   // 菜单类型（1目录 2菜单 3按钮）
+	Hidden     int32          `gorm:"column:hidden;type:tinyint;not null;default:1;comment:显示状态（0显示 1隐藏）" json:"hidden"`                // 显示状态（0显示 1隐藏）
+	KeepAlive  int32          `gorm:"column:keep_alive;type:tinyint;not null;default:1;comment:是否缓存组件状态（1是 2否）" json:"keep_alive"`      // 是否缓存组件状态（1是 2否）
+	IsAffix    int32          `gorm:"column:is_affix;type:tinyint;not null;default:1;comment:是否固定在 tagsView 栏上（1是 2否）" json:"is_affix"` // 是否固定在 tagsView 栏上（1是 2否）
+	Permission string         `gorm:"column:permission;type:varchar(32);not null;comment:权限标识" json:"permission"`                       // 权限标识
+	Status     int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:菜单状态 1=正常 2=停用" json:"status"`               // 菜单状态 1=正常 2=停用
+	CreateBy   string         `gorm:"column:create_by;type:varchar(128);not null;comment:创建人" json:"create_by"`                         // 创建人
+	UpdateBy   string         `gorm:"column:update_by;type:varchar(128);not null;comment:更新人" json:"update_by"`                         // 更新人
+	Remark     string         `gorm:"column:remark;type:varchar(191);not null;comment:备注" json:"remark"`                                // 备注
+	CreatedAt  time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`                                   // 创建时间
+	UpdatedAt  time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`                                   // 更新时间
+	DeletedAt  gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`                                   // 删除时间
 }
 
 // TableName SysMenu's table name

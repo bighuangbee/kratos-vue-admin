@@ -14,20 +14,20 @@ const TableNameSysDept = "sys_depts"
 
 // SysDept mapped from table <sys_depts>
 type SysDept struct {
-	ID        int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	ParentID  int64          `gorm:"column:parent_id;type:bigint;not null;comment:上级部门" json:"parent_id"`
-	DeptPath  string         `gorm:"column:dept_path;type:varchar(255);not null;comment:部门路径" json:"dept_path"`
-	DeptName  string         `gorm:"column:dept_name;type:varchar(128);not null;comment:部门名称" json:"dept_name"`
-	Sort      int32          `gorm:"column:sort;type:int;not null;comment:排序" json:"sort"`
-	Leader    string         `gorm:"column:leader;type:varchar(64);not null;comment:负责人" json:"leader"`
-	Phone     string         `gorm:"column:phone;type:varchar(11);not null;comment:手机" json:"phone"`
-	Email     string         `gorm:"column:email;type:varchar(64);not null;comment:邮箱" json:"email"`
-	Status    int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:状态 1=正常 2-冻结" json:"status"`
-	CreateBy  string         `gorm:"column:create_by;type:varchar(64);not null;comment:创建人" json:"create_by"`
-	UpdateBy  string         `gorm:"column:update_by;type:varchar(64);not null;comment:修改人" json:"update_by"`
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+	ID        int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`       // 主键id
+	ParentID  int64          `gorm:"column:parent_id;type:bigint;not null;comment:上级部门" json:"parent_id"`              // 上级部门
+	DeptPath  string         `gorm:"column:dept_path;type:varchar(255);not null;comment:部门路径" json:"dept_path"`        // 部门路径
+	DeptName  string         `gorm:"column:dept_name;type:varchar(128);not null;comment:部门名称" json:"dept_name"`        // 部门名称
+	Sort      int32          `gorm:"column:sort;type:int;not null;comment:排序" json:"sort"`                             // 排序
+	Leader    string         `gorm:"column:leader;type:varchar(64);not null;comment:负责人" json:"leader"`                // 负责人
+	Phone     string         `gorm:"column:phone;type:varchar(11);not null;comment:手机" json:"phone"`                   // 手机
+	Email     string         `gorm:"column:email;type:varchar(64);not null;comment:邮箱" json:"email"`                   // 邮箱
+	Status    int32          `gorm:"column:status;type:tinyint;not null;default:1;comment:状态 1=正常 2-冻结" json:"status"` // 状态 1=正常 2-冻结
+	CreateBy  string         `gorm:"column:create_by;type:varchar(64);not null;comment:创建人" json:"create_by"`          // 创建人
+	UpdateBy  string         `gorm:"column:update_by;type:varchar(64);not null;comment:修改人" json:"update_by"`          // 修改人
+	CreatedAt time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`                   // 创建时间
+	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`                   // 更新时间
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`                   // 删除时间
 }
 
 // TableName SysDept's table name

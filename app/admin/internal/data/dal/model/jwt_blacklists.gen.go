@@ -15,10 +15,10 @@ const TableNameJwtBlacklist = "jwt_blacklists"
 // JwtBlacklist mapped from table <jwt_blacklists>
 type JwtBlacklist struct {
 	ID        int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true" json:"id"`
-	Jwt       string         `gorm:"column:jwt;type:text;comment:jwt" json:"jwt"`
-	CreatedAt time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+	Jwt       string         `gorm:"column:jwt;type:text;comment:jwt" json:"jwt"`                    // jwt
+	CreatedAt time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"` // 创建时间
+	UpdatedAt time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"` // 更新时间
+	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"` // 删除时间
 }
 
 // TableName JwtBlacklist's table name

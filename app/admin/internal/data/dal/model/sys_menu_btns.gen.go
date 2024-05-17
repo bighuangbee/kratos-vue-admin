@@ -8,10 +8,10 @@ const TableNameSysMenuBtn = "sys_menu_btns"
 
 // SysMenuBtn mapped from table <sys_menu_btns>
 type SysMenuBtn struct {
-	ID     int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	MenuID int64  `gorm:"column:menu_id;type:bigint;not null;comment:菜单ID" json:"menu_id"`
-	Name   string `gorm:"column:name;type:varchar(191);not null;comment:按钮关键key" json:"name"`
-	Desc   string `gorm:"column:desc;type:varchar(191);not null;comment:按钮描述" json:"desc"`
+	ID     int64  `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"` // 主键id
+	MenuID int64  `gorm:"column:menu_id;type:bigint;not null;comment:菜单ID" json:"menu_id"`            // 菜单ID
+	Name   string `gorm:"column:name;type:varchar(191);not null;comment:按钮关键key" json:"name"`         // 按钮关键key
+	Desc   string `gorm:"column:desc;type:varchar(191);not null;comment:按钮描述" json:"desc"`            // 按钮描述
 }
 
 // TableName SysMenuBtn's table name

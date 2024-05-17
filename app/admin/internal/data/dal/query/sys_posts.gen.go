@@ -233,10 +233,6 @@ func (s sysPostDo) Where(conds ...gen.Condition) ISysPostDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysPostDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysPostDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysPostDo) Order(conds ...field.Expr) ISysPostDo {
 	return s.withDO(s.DO.Order(conds...))
 }

@@ -253,10 +253,6 @@ func (l logLoginDo) Where(conds ...gen.Condition) ILogLoginDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logLoginDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ILogLoginDo {
-	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (l logLoginDo) Order(conds ...field.Expr) ILogLoginDo {
 	return l.withDO(l.DO.Order(conds...))
 }

@@ -209,10 +209,6 @@ func (j jwtBlacklistDo) Where(conds ...gen.Condition) IJwtBlacklistDo {
 	return j.withDO(j.DO.Where(conds...))
 }
 
-func (j jwtBlacklistDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) IJwtBlacklistDo {
-	return j.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (j jwtBlacklistDo) Order(conds ...field.Expr) IJwtBlacklistDo {
 	return j.withDO(j.DO.Order(conds...))
 }

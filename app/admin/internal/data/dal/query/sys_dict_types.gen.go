@@ -229,10 +229,6 @@ func (s sysDictTypeDo) Where(conds ...gen.Condition) ISysDictTypeDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysDictTypeDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysDictTypeDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysDictTypeDo) Order(conds ...field.Expr) ISysDictTypeDo {
 	return s.withDO(s.DO.Order(conds...))
 }

@@ -221,10 +221,6 @@ func (c casbinRuleDo) Where(conds ...gen.Condition) ICasbinRuleDo {
 	return c.withDO(c.DO.Where(conds...))
 }
 
-func (c casbinRuleDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ICasbinRuleDo {
-	return c.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (c casbinRuleDo) Order(conds ...field.Expr) ICasbinRuleDo {
 	return c.withDO(c.DO.Order(conds...))
 }

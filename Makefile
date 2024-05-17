@@ -118,7 +118,8 @@ wire:
 # generate api proto
 api: grpc http swagger errors
 
-
+gorm_gen:
+	cd app/admin/cmd/ && go run .
 
 .PHONY: all
 # generate all

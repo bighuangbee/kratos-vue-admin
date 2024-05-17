@@ -8,10 +8,10 @@ const TableNameSysRoleBtn = "sys_role_btns"
 
 // SysRoleBtn mapped from table <sys_role_btns>
 type SysRoleBtn struct {
-	ID     int64 `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	RoleID int64 `gorm:"column:role_id;type:bigint;not null;comment:角色ID" json:"role_id"`
-	MenuID int64 `gorm:"column:menu_id;type:bigint;not null;comment:菜单ID" json:"menu_id"`
-	BtnID  int64 `gorm:"column:btn_id;type:bigint;not null;comment:菜单按钮ID" json:"btn_id"`
+	ID     int64 `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"` // 主键id
+	RoleID int64 `gorm:"column:role_id;type:bigint;not null;comment:角色ID" json:"role_id"`            // 角色ID
+	MenuID int64 `gorm:"column:menu_id;type:bigint;not null;comment:菜单ID" json:"menu_id"`            // 菜单ID
+	BtnID  int64 `gorm:"column:btn_id;type:bigint;not null;comment:菜单按钮ID" json:"btn_id"`            // 菜单按钮ID
 }
 
 // TableName SysRoleBtn's table name

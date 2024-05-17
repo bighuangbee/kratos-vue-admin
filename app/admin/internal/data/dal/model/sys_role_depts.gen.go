@@ -8,9 +8,9 @@ const TableNameSysRoleDept = "sys_role_depts"
 
 // SysRoleDept mapped from table <sys_role_depts>
 type SysRoleDept struct {
-	ID     int64 `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	RoleID int64 `gorm:"column:role_id;type:bigint;not null;comment:角色id" json:"role_id"`
-	DeptID int64 `gorm:"column:dept_id;type:bigint;not null;comment:部门id" json:"dept_id"`
+	ID     int64 `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"` // 主键id
+	RoleID int64 `gorm:"column:role_id;type:bigint;not null;comment:角色id" json:"role_id"`            // 角色id
+	DeptID int64 `gorm:"column:dept_id;type:bigint;not null;comment:部门id" json:"dept_id"`            // 部门id
 }
 
 // TableName SysRoleDept's table name

@@ -277,10 +277,6 @@ func (s sysMenuDo) Where(conds ...gen.Condition) ISysMenuDo {
 	return s.withDO(s.DO.Where(conds...))
 }
 
-func (s sysMenuDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ISysMenuDo {
-	return s.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (s sysMenuDo) Order(conds ...field.Expr) ISysMenuDo {
 	return s.withDO(s.DO.Order(conds...))
 }

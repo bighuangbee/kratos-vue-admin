@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-
 	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
@@ -16,14 +15,21 @@ type ApiService struct {
 	apiUseCase    *biz.SysApiUseCase
 	casbinUseCase *biz.CasbinRuleUseCase
 	log           *log.Helper
+	logger        log.Logger
+	sysApis       map[string]*pb.ApiData
 }
 
 func NewApiService(ac *biz.SysApiUseCase, logger log.Logger, casbinUseCase *biz.CasbinRuleUseCase) *ApiService {
-	return &ApiService{
+	apiService := &ApiService{
 		apiUseCase:    ac,
 		log:           log.NewHelper(log.With(logger, "module", "service/api")),
 		casbinUseCase: casbinUseCase,
+		logger:        logger,
+		sysApis:       make(map[string]*pb.ApiData, 0),
 	}
+
+	apiService.ReloadSysApi()
+	return apiService
 }
 
 func (a *ApiService) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.GetApiReply, error) {
@@ -68,6 +74,9 @@ func (a *ApiService) CreateApi(ctx context.Context, req *pb.CreateApiRequest) (*
 		APIGroup:    req.ApiGroup,
 		Method:      req.Method,
 	})
+
+	a.ReloadSysApi()
+
 	return &pb.CreateApiReply{}, err
 }
 func (a *ApiService) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) (*pb.UpdateApiReply, error) {
@@ -81,10 +90,16 @@ func (a *ApiService) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) (*
 		APIGroup:    req.ApiGroup,
 		Method:      req.Method,
 	})
+
+	a.ReloadSysApi()
+
 	return &pb.UpdateApiReply{}, err
 }
 func (a *ApiService) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) (*pb.DeleteApiReply, error) {
 	err := a.apiUseCase.DeleteApi(ctx, req.Id)
+
+	a.ReloadSysApi()
+
 	return &pb.DeleteApiReply{}, err
 }
 
@@ -113,4 +128,20 @@ func (a *ApiService) GetPolicyPathByRoleKey(ctx context.Context, req *pb.GetPoli
 	return &pb.GetPolicyPathByRoleKeyReply{
 		Apis: apis,
 	}, nil
+}
+
+func (a *ApiService) ReloadSysApi() {
+	reply, err := a.AllApi(context.Background(), &pb.AllApiRequest{})
+	if err != nil {
+		log.Error("ReloadSysApi", err)
+		return
+	}
+
+	for _, item := range reply.Data {
+		a.sysApis[item.Path] = item
+	}
+}
+
+func (a *ApiService) GetSysApi(path string) *pb.ApiData {
+	return a.sysApis[path]
 }

@@ -229,10 +229,6 @@ func (l logJobDo) Where(conds ...gen.Condition) ILogJobDo {
 	return l.withDO(l.DO.Where(conds...))
 }
 
-func (l logJobDo) Exists(subquery interface{ UnderlyingDB() *gorm.DB }) ILogJobDo {
-	return l.Where(field.CompareSubQuery(field.ExistsOp, nil, subquery.UnderlyingDB()))
-}
-
 func (l logJobDo) Order(conds ...field.Expr) ILogJobDo {
 	return l.withDO(l.DO.Order(conds...))
 }

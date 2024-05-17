@@ -14,14 +14,14 @@ const TableNameSysAPI = "sys_apis"
 
 // SysAPI mapped from table <sys_apis>
 type SysAPI struct {
-	ID          int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`
-	Path        string         `gorm:"column:path;type:varchar(191);not null;comment:api路径" json:"path"`
-	Description string         `gorm:"column:description;type:varchar(191);not null;comment:api中文描述" json:"description"`
-	APIGroup    string         `gorm:"column:api_group;type:varchar(191);not null;comment:api组" json:"api_group"`
-	Method      string         `gorm:"column:method;type:varchar(20);not null;comment:方法" json:"method"`
-	CreatedAt   time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`
-	UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`
-	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`
+	ID          int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`       // 主键id
+	Path        string         `gorm:"column:path;type:varchar(191);not null;comment:api路径" json:"path"`                 // api路径
+	Description string         `gorm:"column:description;type:varchar(191);not null;comment:api中文描述" json:"description"` // api中文描述
+	APIGroup    string         `gorm:"column:api_group;type:varchar(191);not null;comment:api组" json:"api_group"`        // api组
+	Method      string         `gorm:"column:method;type:varchar(20);not null;comment:方法" json:"method"`                 // 方法
+	CreatedAt   time.Time      `gorm:"column:created_at;type:datetime;comment:创建时间" json:"created_at"`                   // 创建时间
+	UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime;comment:更新时间" json:"updated_at"`                   // 更新时间
+	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime;comment:删除时间" json:"deleted_at"`                   // 删除时间
 }
 
 // TableName SysAPI's table name
