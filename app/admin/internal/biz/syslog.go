@@ -6,7 +6,7 @@ import (
 )
 
 type SysLogRepo interface {
-	Create(ctx context.Context, log *model.LogOper) error
+	Create(ctx context.Context, log *model.SysLog) error
 }
 
 type SysLogCase struct {
@@ -19,6 +19,6 @@ func NewSysLogCase(repo SysLogRepo) *SysLogCase {
 	}
 }
 
-func (r *SysLogCase) Create(ctx context.Context, log *model.LogOper) error {
+func (r *SysLogCase) Create(ctx context.Context, log *model.SysLog) error {
 	return r.repo.Create(ctx, log)
 }

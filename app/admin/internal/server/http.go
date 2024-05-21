@@ -98,7 +98,7 @@ func NewHTTPServer(
 		http.Middleware(
 			recovery.Recovery(),
 			middleware.Auth(s, casbinRepo),
-			middleware.SaveLog(logger, logService, apiService),
+			middleware.LogFileDB(logger, logService, apiService),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"Accept", "Accept-Language", "Content-Language", "Origin", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"}),

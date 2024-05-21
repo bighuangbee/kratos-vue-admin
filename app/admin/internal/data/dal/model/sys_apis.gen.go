@@ -16,6 +16,7 @@ const TableNameSysAPI = "sys_apis"
 type SysAPI struct {
 	ID          int64          `gorm:"column:id;type:bigint;primaryKey;autoIncrement:true;comment:主键id" json:"id"`       // 主键id
 	Path        string         `gorm:"column:path;type:varchar(191);not null;comment:api路径" json:"path"`                 // api路径
+	URI         string         `gorm:"column:uri;type:varchar(100);comment:资源标识符" json:"uri"`                            // 资源标识符
 	Description string         `gorm:"column:description;type:varchar(191);not null;comment:api中文描述" json:"description"` // api中文描述
 	APIGroup    string         `gorm:"column:api_group;type:varchar(191);not null;comment:api组" json:"api_group"`        // api组
 	Method      string         `gorm:"column:method;type:varchar(20);not null;comment:方法" json:"method"`                 // 方法

@@ -16,8 +16,8 @@ func NewSysLogRepo(data *Data) biz.SysLogRepo {
 	}
 }
 
-func (r *syslogRepo) Create(ctx context.Context, g *model.LogOper) error {
-	q := r.data.Query(ctx).LogOper
+func (r *syslogRepo) Create(ctx context.Context, g *model.SysLog) error {
+	q := r.data.Query(ctx).SysLog
 	err := q.WithContext(ctx).Clauses().Create(g)
 	return err
 }

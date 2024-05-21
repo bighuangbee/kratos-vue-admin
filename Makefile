@@ -93,8 +93,6 @@ generate:
 build:
 	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin ./...
 
-build_server:
-	mkdir -p bin/ && go build -ldflags "-X main.Version=$(VERSION)" -o ./bin/im-admin app/admin/cmd/server/main.go app/admin/cmd/server/wire_gen.go
 
 .PHONY: test
 # test
@@ -107,7 +105,7 @@ run:
 
 .PHONY: docker
 docker:
-	cd ../../.. && docker build -f deploy/build/Dockerfile --build-arg APP_RELATIVE_PATH=$(APP_RELATIVE_PATH) -t $(DOCKER_IMAGE) .
+	docker build -f app/admin/Dockerfile -t admin_svc .
 
 .PHONY: wire
 # generate wire

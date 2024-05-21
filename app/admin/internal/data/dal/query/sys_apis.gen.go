@@ -29,6 +29,7 @@ func newSysAPI(db *gorm.DB, opts ...gen.DOOption) sysAPI {
 	_sysAPI.ALL = field.NewAsterisk(tableName)
 	_sysAPI.ID = field.NewInt64(tableName, "id")
 	_sysAPI.Path = field.NewString(tableName, "path")
+	_sysAPI.URI = field.NewString(tableName, "uri")
 	_sysAPI.Description = field.NewString(tableName, "description")
 	_sysAPI.APIGroup = field.NewString(tableName, "api_group")
 	_sysAPI.Method = field.NewString(tableName, "method")
@@ -47,6 +48,7 @@ type sysAPI struct {
 	ALL         field.Asterisk
 	ID          field.Int64  // 主键id
 	Path        field.String // api路径
+	URI         field.String // 资源标识符
 	Description field.String // api中文描述
 	APIGroup    field.String // api组
 	Method      field.String // 方法
@@ -71,6 +73,7 @@ func (s *sysAPI) updateTableName(table string) *sysAPI {
 	s.ALL = field.NewAsterisk(table)
 	s.ID = field.NewInt64(table, "id")
 	s.Path = field.NewString(table, "path")
+	s.URI = field.NewString(table, "uri")
 	s.Description = field.NewString(table, "description")
 	s.APIGroup = field.NewString(table, "api_group")
 	s.Method = field.NewString(table, "method")
@@ -93,9 +96,10 @@ func (s *sysAPI) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *sysAPI) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 8)
+	s.fieldMap = make(map[string]field.Expr, 9)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["path"] = s.Path
+	s.fieldMap["uri"] = s.URI
 	s.fieldMap["description"] = s.Description
 	s.fieldMap["api_group"] = s.APIGroup
 	s.fieldMap["method"] = s.Method
