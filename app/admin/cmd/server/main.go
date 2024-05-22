@@ -5,6 +5,7 @@ import (
 	logger2 "github.com/bighuangbee/kratos-vue-admin/pkg/logger"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
+	"github.com/go-kratos/kratos/v2/registry"
 	"go.uber.org/zap/zapcore"
 	"os"
 
@@ -15,7 +16,6 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	_ "go.uber.org/automaxprocs"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -35,6 +35,20 @@ func init() {
 }
 
 func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
+
+	var registrar registry.Registrar
+	//if bc.Discovery.OnOff {
+	//	namming, err := grpc_client.NewNamingClient(
+	//		bc.Discovery.IPAddr,
+	//		uint64(bc.Discovery.Port),
+	//		unil.WithNamespaceID(bc.Env),
+	//	)
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	registrar = nacos.New(namming)
+	//}
+
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -45,6 +59,7 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server) *kratos.App {
 			gs,
 			hs,
 		),
+		kratos.Registrar(registrar),
 	)
 }
 
