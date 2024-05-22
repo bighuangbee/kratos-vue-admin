@@ -6,12 +6,12 @@
 package main
 
 import (
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/oss"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/server"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/service"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/oss"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/server"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

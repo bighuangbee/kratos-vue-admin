@@ -2,16 +2,16 @@ package biz
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/common/constant"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg"
+	"github.com/bighuangbee/kratos-vue-admin/pkg/common/constant"
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/util"
+	pb "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/bighuangbee/kratos-vue-admin/pkg/util"
 )
 
 type AuthUseCase struct {

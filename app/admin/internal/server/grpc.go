@@ -1,9 +1,9 @@
 package server
 
 import (
-	v1 "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/service"
+	v1 "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

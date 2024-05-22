@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
 )
 
 type localClient struct {

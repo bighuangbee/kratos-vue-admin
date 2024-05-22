@@ -11,12 +11,12 @@ import (
 	"github.com/kakuilan/kgo"
 	"gorm.io/gorm"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/common"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/util"
+	pb "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/common"
+	"github.com/bighuangbee/kratos-vue-admin/pkg/util"
 )
 
 var (

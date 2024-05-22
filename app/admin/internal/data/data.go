@@ -3,9 +3,9 @@ package data
 import (
 	"context"
 	"fmt"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/query"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data/dal/query"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	go_redis "github.com/redis/go-redis/v9"

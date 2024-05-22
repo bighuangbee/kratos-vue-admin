@@ -10,8 +10,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
 )
 
 type casbinRuleRepo struct {

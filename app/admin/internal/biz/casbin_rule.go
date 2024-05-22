@@ -7,7 +7,7 @@ import (
 	"github.com/casbin/casbin/v2/persist"
 	"github.com/go-kratos/kratos/v2/log"
 
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
+	pb "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
 )
 
 type CasbinRuleRepo interface {

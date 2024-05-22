@@ -7,7 +7,7 @@
 package common
 
 import (
-	wrapperspb "github.com/byteflowteam/kratos-vue-admin/pkg/proto/wrapperspb"
+	wrapperspb "github.com/bighuangbee/kratos-vue-admin/pkg/proto/wrapperspb"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

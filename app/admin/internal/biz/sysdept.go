@@ -3,14 +3,14 @@ package biz
 import (
 	"context"
 	"errors"
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
-	"github.com/byteflowteam/kratos-vue-admin/pkg/util"
+	pb "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
+	"github.com/bighuangbee/kratos-vue-admin/pkg/util"
 	"strconv"
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
 type SysDeptRepo interface {

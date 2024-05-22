@@ -1,4 +1,4 @@
-module github.com/byteflowteam/kratos-vue-admin
+module github.com/bighuangbee/kratos-vue-admin
 
 go 1.20
 

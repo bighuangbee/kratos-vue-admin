@@ -9,9 +9,9 @@ import (
 	"github.com/tx7do/kratos-casbin/authz/casbin"
 	"time"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
 func AuthWhiteListMatcher() selector.MatchFunc {

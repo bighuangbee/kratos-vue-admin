@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/biz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 	"time"
 )

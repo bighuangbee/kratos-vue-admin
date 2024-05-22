@@ -2,7 +2,7 @@ package biz
 
 import (
 	"context"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data/dal/model"
 )
 
 type SysLogRepo interface {

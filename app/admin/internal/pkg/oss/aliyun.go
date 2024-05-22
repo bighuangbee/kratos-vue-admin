@@ -6,7 +6,7 @@ import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/conf"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/conf"
 )
 
 type aliyunClient struct {

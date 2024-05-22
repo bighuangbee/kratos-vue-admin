@@ -2,12 +2,12 @@ package biz
 
 import (
 	"context"
-	pb "github.com/byteflowteam/kratos-vue-admin/api/admin/v1"
+	pb "github.com/bighuangbee/kratos-vue-admin/api/admin/v1"
 
 	"github.com/go-kratos/kratos/v2/log"
 
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/data/dal/model"
-	"github.com/byteflowteam/kratos-vue-admin/app/admin/internal/pkg/authz"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/data/dal/model"
+	"github.com/bighuangbee/kratos-vue-admin/app/admin/internal/pkg/authz"
 )
 
 type SysMenuRepo interface {
