@@ -59,29 +59,31 @@ func LogFileDB(logger log.Logger, logService *service.LogService, apiService *se
 					"reason", reason,
 					"latency", fmt.Sprintf("%dms", time.Since(startTime).Milliseconds()))
 
-				if api := apiService.GetSysApi(operation); api != nil {
+				if logService != nil && apiService != nil {
+					if api := apiService.GetSysApi(operation); api != nil {
 
-					if claims, err := authz.FromContext(ctx); err != nil {
-						logger.Log(log.LevelWarn, "authz.FromContext(ctx)", err)
+						if claims, err := authz.FromContext(ctx); err != nil {
+							logger.Log(log.LevelWarn, "authz.FromContext(ctx)", err)
+						} else {
+							logService.Create(ctx, &model.SysLog{
+								Title:        api.Description,
+								BusinessType: 0,
+								URL:          httpTr.Request().URL.String(),
+								Method:       httpTr.Request().Method,
+								UserName:     claims.Nickname,
+								UserID:       claims.UserID,
+								IP:           ip,
+								Latency:      int32(time.Since(startTime).Milliseconds()),
+								Resp:         "",
+								Status:       code,
+								ErrorMessage: reason,
+								CreatedAt:    time.Now(),
+							})
+						}
+
 					} else {
-						logService.Create(ctx, &model.SysLog{
-							Title:        api.Description,
-							BusinessType: 0,
-							URL:          httpTr.Request().URL.String(),
-							Method:       httpTr.Request().Method,
-							UserName:     claims.Nickname,
-							UserID:       claims.UserID,
-							IP:           ip,
-							Latency:      int32(time.Since(startTime).Milliseconds()),
-							Resp:         "",
-							Status:       code,
-							ErrorMessage: reason,
-							CreatedAt:    time.Now(),
-						})
+						logger.Log(log.LevelWarn, "operation not exists", operation)
 					}
-
-				} else {
-					logger.Log(log.LevelWarn, "operation not exists", operation)
 				}
 			}
 			return

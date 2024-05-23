@@ -1,4 +1,4 @@
-package grpc_client
+package kitGrpc
 
 import (
 	"strconv"

@@ -1,4 +1,4 @@
-package grpc_client
+package kitGrpc
 
 import (
 	"context"
@@ -11,7 +11,6 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients/config_client"
 	"github.com/nacos-group/nacos-sdk-go/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
-	"github.com/nacos-group/nacos-sdk-go/common/logger"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 )
 
@@ -70,12 +69,6 @@ func WithLogLevel(lv string) ClientOption {
 		if lv != "" {
 			o.LogLevel = lv
 		}
-	}
-}
-
-func WithLogger(logger2 logger.Logger) ClientOption {
-	return func(o *constant.ClientConfig) {
-		logger.SetLogger(logger2)
 	}
 }
 

@@ -1,7 +1,8 @@
-package grpc_client
+package kitGrpc
 
 import (
 	"context"
+	middleware2 "github.com/bighuangbee/kratos-vue-admin/pkg/middleware"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/middleware"
@@ -32,7 +33,7 @@ func GetConn(ctx context.Context, endpoint string) (*grpc.ClientConn, error) {
 		kgrpc.WithMiddleware(
 			recovery.Recovery(),
 			tracing.Client(
-			//tracing.WithTracerProvider(hiOtel.GetTracerProvider()),
+				tracing.WithTracerProvider(GetTracerProvider()),
 			),
 		),
 		kgrpc.WithTimeout(time.Second*3),
@@ -56,7 +57,7 @@ func GetGrpcClient(ctx context.Context, opt GetConnOption) (*grpc.ClientConn, er
 		}))),
 	}
 	if opt.Logger != nil {
-		middlewares = append(middlewares, KClientLog(opt.Logger))
+		middlewares = append(middlewares, middleware2.ClientLogFile(opt.Logger))
 	}
 
 	clientOpts := []kgrpc.ClientOption{
